@@ -1,12 +1,1300 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AIR</title>
+  <title>DAE Aircraft Inspection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dae-red: #B71C1C;
+      --dae-dark: #4A4A4A;
+      --dae-medium: #7A8795;
+      --dae-light: #E8EAED;
+      --primary: #1a1a1a;
+      --secondary: #6c757d;
+      --accent: #0066cc;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --light: #f8f9fa;
+      --border: #dee2e6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--primary);
+      background: #f5f6f8;
+      padding-bottom: 120px;
+    }
+
+    header {
+      padding: 20px 24px;
+      background: #fff;
+      border-bottom: 1px solid var(--dae-light);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--dae-red);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dae-dark);
+    }
+
+    nav {
+      margin-top: 12px;
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .nav-btn {
+      border: 1px solid var(--dae-light);
+      background: #fff;
+      color: var(--dae-medium);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      min-height: 44px;
+      white-space: nowrap;
+    }
+
+    .nav-btn.active {
+      border-color: var(--dae-red);
+      color: var(--dae-red);
+      background: #fff6f6;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .section {
+      margin-bottom: 28px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--dae-light);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      color: var(--dae-dark);
+    }
+
+    .section h3 {
+      margin: 20px 0 8px;
+      font-size: 18px;
+      color: var(--dae-dark);
+    }
+
+    .section h4 {
+      margin: 16px 0 6px;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--dae-medium);
+    }
+
+    .section p {
+      margin: 0 0 12px;
+      color: var(--secondary);
+      font-size: 13px;
+    }
+
+    .grid-4 {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--dae-light);
+    }
+
+    .stat-card h3 {
+      margin: 0 0 8px;
+      font-size: 14px;
+      color: var(--dae-medium);
+    }
+
+    .stat-card span {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--dae-dark);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--dae-light);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--dae-medium);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    .badge {
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge.orange { background: #fff3cd; color: #b76a00; }
+    .badge.green { background: #e6f4ea; color: #1e7e34; }
+    .badge.blue { background: #e7f1ff; color: #0050b3; }
+
+    .button {
+      border: none;
+      padding: 8px 12px;
+      background: var(--dae-red);
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      min-height: 36px;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--dae-red);
+      border: 1px solid var(--dae-red);
+    }
+
+    .fields-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--dae-medium);
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      min-height: 44px;
+      background: #fff;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .saved input, .saved select, .saved textarea {
+      border-color: var(--success);
+      background: #f6fef9;
+      animation: savedPulse 0.5s ease;
+    }
+
+    .save-indicator {
+      position: absolute;
+      right: 12px;
+      top: 36px;
+      color: var(--success);
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .saved .save-indicator {
+      opacity: 1;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .inline-note {
+      background: #fff8e1;
+      border: 1px solid #ffe08a;
+      color: #8a6d3b;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+
+    .area-card {
+      border: 1px solid var(--dae-light);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #fff;
+    }
+
+    .area-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .area-header h4 {
+      margin: 0;
+      font-size: 16px;
+      color: var(--dae-dark);
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .sn-tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f4f4f4;
+      font-size: 12px;
+      color: var(--dae-medium);
+    }
+
+    .condition-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--dae-light);
+    }
+
+    .condition-row:last-child {
+      border-bottom: none;
+    }
+
+    .radio-group {
+      display: flex;
+      gap: 12px;
+      font-size: 12px;
+    }
+
+    .remarks {
+      margin-top: 8px;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .remarks.show {
+      display: block;
+    }
+
+    .photo-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      margin-top: 12px;
+    }
+
+    .photo-card {
+      border: 1px solid var(--dae-light);
+      border-radius: 8px;
+      padding: 6px;
+      text-align: center;
+    }
+
+    .photo-card img {
+      width: 100%;
+      border-radius: 6px;
+      height: 70px;
+      object-fit: cover;
+    }
+
+    .photo-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .photo-actions button {
+      border: none;
+      background: none;
+      color: var(--accent);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .record-section {
+      margin-bottom: 20px;
+    }
+
+    .record-card {
+      border: 1px solid var(--dae-light);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+      background: #fff;
+    }
+
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .record-header strong {
+      font-size: 14px;
+      color: var(--dae-dark);
+    }
+
+    .record-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .record-status-select {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      min-height: 36px;
+    }
+
+    .status-yes { background: #e8f5e9; color: #1b5e20; }
+    .status-no { background: #fff3cd; color: #8a6d3b; }
+    .status-na { background: #e3f2fd; color: #0d47a1; }
+
+    .file-list {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--dae-light);
+      padding: 4px 0;
+    }
+
+    .file-item:last-child {
+      border-bottom: none;
+    }
+
+    .action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid var(--dae-light);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 30;
+    }
+
+    .action-bar span {
+      font-size: 12px;
+      color: var(--dae-medium);
+    }
+
+    @keyframes savedPulse {
+      0% { box-shadow: 0 0 0 rgba(40, 167, 69, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+      100% { box-shadow: 0 0 0 rgba(40, 167, 69, 0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 16px;
+      }
+
+      .action-bar {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>AIR</h1>
-  <p>Deployment OK.</p>
+  <header>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <h1>DAE Aircraft Inspection</h1>
+    </div>
+    <nav>
+      <button class="nav-btn active" onclick="switchView('dashboard')">Dashboard</button>
+      <button class="nav-btn" onclick="switchView('inspection')">Inspection</button>
+      <button class="nav-btn" onclick="switchView('records')">Records</button>
+    </nav>
+  </header>
+  <main>
+    <section id="dashboard" class="view active">
+      <div class="section">
+        <h2>Dashboard</h2>
+        <p>Executive view of active aircraft inspections.</p>
+        <div class="grid-4">
+          <div class="stat-card">
+            <h3>Active Inspections</h3>
+            <span>6</span>
+          </div>
+          <div class="stat-card">
+            <h3>Completed This Month</h3>
+            <span>4</span>
+          </div>
+          <div class="stat-card">
+            <h3>Avg Completion Time</h3>
+            <span>8.2 days</span>
+          </div>
+          <div class="stat-card">
+            <h3>Pending Review</h3>
+            <span>2</span>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>Projects</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Aircraft</th>
+              <th>Operator</th>
+              <th>Inspector</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr onclick="switchView('inspection')">
+              <td>MSN 42825</td>
+              <td>Arajet</td>
+              <td>Jack Smith</td>
+              <td><span class="badge orange">In Progress</span></td>
+              <td>Nov 03, 2025</td>
+              <td><button class="button secondary" onclick="switchView('inspection')">View</button></td>
+            </tr>
+            <tr onclick="switchView('inspection')">
+              <td>MSN 42833</td>
+              <td>Arajet</td>
+              <td>Mira White</td>
+              <td><span class="badge green">Submitted</span></td>
+              <td>Oct 28, 2025</td>
+              <td><button class="button secondary" onclick="switchView('inspection')">View</button></td>
+            </tr>
+            <tr onclick="switchView('inspection')">
+              <td>MSN 7020</td>
+              <td>SunJet</td>
+              <td>Samuel Lee</td>
+              <td><span class="badge blue">Assigned</span></td>
+              <td>Nov 10, 2025</td>
+              <td><button class="button secondary" onclick="switchView('inspection')">View</button></td>
+            </tr>
+            <tr onclick="switchView('inspection')">
+              <td>MSN 5438</td>
+              <td>SkyEra</td>
+              <td>Linda Chen</td>
+              <td><span class="badge orange">In Progress</span></td>
+              <td>Nov 06, 2025</td>
+              <td><button class="button secondary" onclick="switchView('inspection')">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="inspection" class="view">
+      <div class="section">
+        <h2>General Aircraft Data</h2>
+        <p>Core information that auto-populates throughout the report.</p>
+        <div id="general-data" class="fields-grid"></div>
+      </div>
+
+      <div class="section">
+        <h2>Section 1 - Executive Summary</h2>
+        <div id="executive-summary"></div>
+      </div>
+
+      <div class="section">
+        <h2>Section 3 - Physical Inspection - Exterior</h2>
+        <div id="exterior-areas"></div>
+      </div>
+
+      <div class="section">
+        <h2>Section 4 - Physical Inspection - Interior</h2>
+        <div id="interior-areas"></div>
+      </div>
+    </section>
+
+    <section id="records" class="view">
+      <div class="section">
+        <h2>Records Checklist</h2>
+        <p>Complete records verification with auto-managed status tracking.</p>
+        <div id="records-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="action-bar">
+    <span>All changes are saved in real time. Green pulse confirms save.</span>
+    <button class="button">Submit Report</button>
+  </div>
+
+  <script>
+    const formData = {};
+
+    const generalDataFields = [
+      { id: 'mission_type', label: 'Mission Type', type: 'select', options: ['Audit', 'Return', 'Delivery'], default: 'Audit' },
+      { id: 'aircraft_type', label: 'Aircraft Type', type: 'text', placeholder: 'Boeing 737-8', sample: 'Boeing 737-8' },
+      { id: 'msn', label: 'MSN (Manufacturer Serial Number)', type: 'text', placeholder: '42825', sample: '42825' },
+      { id: 'registration', label: 'Current Registration', type: 'text', placeholder: 'HI1103', sample: 'HI1103' },
+      { id: 'operator', label: 'Current Operator', type: 'text', placeholder: 'Arajet', sample: 'Arajet' },
+      { id: 'dom', label: 'Date of Manufacture', type: 'date', sample: '2023-08-15' },
+      { id: 'engine1_sn', label: 'Engine #1 Serial Number (LH)', type: 'text', placeholder: '602161', sample: '602161', populates: ['sn_value_engine1', 'sn_records_ESN1'] },
+      { id: 'engine2_sn', label: 'Engine #2 Serial Number (RH)', type: 'text', placeholder: '602391', sample: '602391', populates: ['sn_value_engine2', 'sn_records_ESN2'] },
+      { id: 'apu_sn', label: 'APU Serial Number', type: 'text', placeholder: 'P-11825', sample: 'P-11825', populates: ['sn_records_APU'] },
+      { id: 'apu_model', label: 'APU Model', type: 'text', placeholder: 'GTCP85-98DHF', sample: 'GTCP85-98DHF' },
+      { id: 'nose_lg_sn', label: 'Nose Landing Gear S/N', type: 'text', placeholder: 'GK00011Y6396', sample: 'GK00011Y6396', populates: ['sn_rec_K002_NOSE', 'sn_rec_K101_NOSE'] },
+      { id: 'left_lg_sn', label: 'Left Main Landing Gear S/N', type: 'text', placeholder: 'GK00011Y6397', sample: 'GK00011Y6397', populates: ['sn_rec_K002_LM', 'sn_rec_K101_LM'] },
+      { id: 'right_lg_sn', label: 'Right Main Landing Gear S/N', type: 'text', placeholder: 'GK00011Y6398', sample: 'GK00011Y6398', populates: ['sn_rec_K002_RM', 'sn_rec_K101_RM'] },
+      { id: 'inspector_name', label: 'Inspector Name', type: 'text', placeholder: 'Jack Smith', sample: 'Jack Smith' },
+      { id: 'inspection_date', label: 'Physical Inspection Date', type: 'date', sample: '2025-11-03' },
+      { id: 'report_date', label: 'Report Date', type: 'date', sample: '2025-11-12' }
+    ];
+
+    const executiveSummary = {
+      general_visit: {
+        title: 'General - Summary of Visit',
+        questions: [
+          { id: 'visit_purpose', label: 'a) Brief purpose of the visit, location(s) and date(s) of the visit', type: 'textarea' },
+          { id: 'operator_cooperation', label: 'b) Operator cooperation and general responsiveness', type: 'textarea' },
+          { id: 'facilities_description', label: "c) A brief description of the Operator's maintenance facilities at inspection locations (satisfactory/unsatisfactory)", type: 'textarea' },
+          { id: 'issues_concerns', label: 'd) Issues/Concerns/Recommendations/Feedback on the Inspection', type: 'textarea' }
+        ]
+      },
+      operator_contacts: {
+        title: 'Operator Key Contact Personal',
+        type: 'dynamic_table',
+        columns: ['Contact', 'Title', 'Phone Number', 'Email']
+      },
+      inspection_findings: {
+        title: 'Inspection Findings',
+        subsections: {
+          records: {
+            title: 'a) RECORDS',
+            questions: [
+              { id: 'records_q1', label: '1. A brief description of the records keeping of the airline, suitability of their storage facility (humidity controlled/fire protection system/secure/etc.), accessibility of records and speed of retrieval.', type: 'textarea' },
+              { id: 'records_q2', label: '2. Does the airline have a process to digitize records? If yes, is this internally controlled or outsourced to a third party? If outsourced, please provide details of the Third-Party Vendor.', type: 'textarea' },
+              { id: 'records_q3', label: '3. Please mention if this Inspection included collection of latest updated records or involved scanning (complete historical/top up scanning) of records.', type: 'textarea' },
+              { id: 'records_q4', label: '4. Please provide detailed comments on how the airline accomplishes the following:\n   a. Tracking and implementation of ADs and Mandatory SBs\n   b. Identifying Major and Minor Modifications, approval process and availability of FAA/EASA approvals for major modifications\n   c. Tracking of aircraft structural damages and updating Dent & Buckle chart, availability of updated chart onboard and availability of repair paperwork for existing repairs.\n   d. Maintaining Engine, Landing Gear and APU SV records, existence of an airline-vendor agreements for shop maintenance, availability of LLP B2B trace records etc.\n   e. Availability of FAA/EASA release tags for components (HT and OCCM).\n   f. If the aircraft or any of the assets were in storage during the visit, please provide updates on the availability of the preservation records.', type: 'textarea', rows: 8 },
+              { id: 'records_q5', label: '5. Issues/Concerns/Recommendations:', type: 'textarea' }
+            ]
+          },
+          airframe: {
+            title: 'b) AIRFRAME',
+            subtitle: 'Please include a summary of the physical inspection:',
+            questions: [
+              { id: 'airframe_q1', label: '1. General condition and status of the aircraft.', type: 'textarea' },
+              { id: 'airframe_q2', label: '2. Status of Avionics Modifications found physically installed on the aircraft', type: 'textarea' },
+              { id: 'airframe_q3', label: '3. Please specify any findings – elaborate categorically on External Structural Damages, repeat inspection/time limited repairs and significant cabin interior findings (eg seat cushions/covers badly worn, corrosion issues surrounding galleys/lavatories, etc.)', type: 'textarea' },
+              { id: 'airframe_q4', label: '4. If the aircraft was in storage during the visit, please specify if any components have been removed or cannibalized. Also specify the storage conditions and any findings related to improper storage/incorrect preservation etc.', type: 'textarea' },
+              { id: 'airframe_q5', label: '5. If serious damage/findings exist, please include your detailed findings and photos below.', type: 'textarea' },
+              { id: 'airframe_q6', label: '6. Issues/Concerns/Recommendations:', type: 'textarea' }
+            ]
+          },
+          engines: {
+            title: 'c) ENGINES',
+            subtitle: 'Summary of the Engines including their current location(s).',
+            items: [
+              { id: 'engine1_findings', label: '1. Assigned Engine Serial Number', sn_ref: 'engine1_sn', type: 'textarea', placeholder: 'Issues/Concerns/Recommendations:' },
+              { id: 'engine2_findings', label: '2. Assigned Engine Serial Number', sn_ref: 'engine2_sn', type: 'textarea', placeholder: 'Issues/Concerns/Recommendations:' }
+            ]
+          },
+          apu: {
+            title: 'd) APU',
+            subtitle: 'Summary of the APU including their current location(s).',
+            items: [
+              { id: 'apu_findings', label: 'Assigned APU Serial Number', sn_ref: 'apu_sn', type: 'textarea', placeholder: 'Issues/Concerns/Recommendations:' }
+            ]
+          },
+          landing_gears: {
+            title: 'e) LANDING GEARS AND WHEEL WELLS',
+            items: [
+              { id: 'lg_findings', label: 'Issues/Concerns/Recommendations:', type: 'textarea' }
+            ]
+          },
+          incidents: {
+            title: 'f) INCIDENTS/ACCIDENTS',
+            items: [
+              { id: 'incidents_text', label: 'Provide a brief comment clarifying if/when the aircraft has been involved in any incidents or accidents. Please specify if NIS statements were collected from the Operator during this visit.', type: 'textarea' }
+            ]
+          }
+        }
+      },
+      mods_stcs: {
+        title: 'Incorporated Mods & STCs at Current Operator',
+        type: 'dynamic_table',
+        columns: ['ATA', 'Title'],
+        note: 'NOTE: Please include the following when providing Supporting Documentation for Supplemental Type Certificates & SB/Engineering: STC, SB, Form 337 or Regulatory Authority Equivalent, EO Package at installation for each Mod. Please include any local approvals.'
+      },
+      differences: {
+        title: 'Differences',
+        items: [
+          { id: 'differences_text', label: 'Identify any difference between the aircraft and provided Specification Summary.', type: 'textarea' }
+        ]
+      },
+      followup: {
+        title: 'Follow Up Items',
+        items: [
+          { id: 'followup_text', label: 'If applicable, list any items that remain open post completion of the visit/inspection report, that require follow up actions.', type: 'textarea' }
+        ]
+      }
+    };
+
+    const physicalExterior = [
+      { id: 'lh_fwd_fuse', title: 'Left Forward Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Door surrounds', 'Window condition'] },
+      { id: 'nose_gear', title: 'Nose Gear & Wheel Well', items: ['Nose Landing Gear', 'Tires condition', 'General Appearance', 'Wheel Well Appearance', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of tires', 'Wheel well'] },
+      { id: 'nose_radome', title: 'Nose/Radome', items: ['Paint', 'Surface Condition'], required_photos: ['General view', 'Radome surface'] },
+      { id: 'rh_fwd_fuse', title: 'Right Forward Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Door surrounds', 'Window condition'] },
+      { id: 'fwd_cargo', title: 'Forward Cargo Hold', items: ['Door', 'Floor', 'Ceiling', 'Forward/Aft Bulkheads/Sidewalls', 'Baggage Handling Equipment', 'Smoke Detectors'], required_photos: ['General views', 'Floor condition', 'Ceiling condition', 'Cargo door'] },
+      { id: 'rh_mid_fuse', title: 'Right Mid Fuselage', items: ['Fuselage Skin', 'Paint', 'Windows', 'Antenna'], required_photos: ['General views', 'Antenna installation'] },
+      { id: 'rh_wing', title: 'Right Wing', items: ['Evidence of Leaks', 'Paint', 'Leading Edge', 'Fueling Station', 'Trailing Edge', 'Upper Surface'], required_photos: ['General views', 'Leading edge', 'Trailing edge', 'Fueling station', 'Upper surface'] },
+      { id: 'engine2', title: 'Fitted Engine No. 2 - RH', sn_ref: 'engine2_sn', items: ['Inlet', 'De-icer boot condition', 'Engine Mount FWD & AFT', 'Service panels & Latches', 'Exhaust Area', 'Evidence of Leaks', 'Pylon'], required_photos: ['⚠️ REQUIRED: Data Plate', '⚠️ REQUIRED: General View', '⚠️ REQUIRED: Inlet View', 'Fan blades', 'Exhaust view'] },
+      { id: 'rh_gear', title: 'Right Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Wheel well general condition', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of brakes', 'Wheel well'] },
+      { id: 'rh_aft_fuse', title: 'Right Aft Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Aft section'] },
+      { id: 'tail', title: 'Tail Area', items: ['Paint', 'Vertical Fin & Rudder', 'Horizontal Stabilizer & Elevators', 'Evidence of Leaks'], required_photos: ['General views', 'Vertical stabilizer', 'Horizontal stabilizer', 'Rudder'] },
+      { id: 'lh_aft_fuse', title: 'Left Aft Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Aft section'] },
+      { id: 'lh_mid_fuse', title: 'Left Mid Fuselage', items: ['Fuselage Skin', 'Paint', 'Windows'], required_photos: ['General views'] },
+      { id: 'lh_wing', title: 'Left Wing', items: ['Evidence of Leaks', 'Paint', 'Leading Edge', 'Fueling Station', 'Trailing Edge', 'Upper Surface'], required_photos: ['General views', 'Leading edge', 'Trailing edge', 'Fueling station', 'Upper surface'] },
+      { id: 'lh_gear', title: 'Left Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Wheel well general condition', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of brakes', 'Wheel well'] },
+      { id: 'engine1', title: 'Fitted Engine No. 1 - LH', sn_ref: 'engine1_sn', items: ['Inlet', 'Fan Blades', 'Abradable Lining', 'Acoustic Panels', 'Exhaust Plug', 'Low LPT outlet guide vane', 'Evidence of Leaks', 'Pylon'], required_photos: ['⚠️ REQUIRED: Data Plate', '⚠️ REQUIRED: General View', '⚠️ REQUIRED: Inlet View', 'Fan blades', 'Exhaust view', 'Pylon'] }
+    ];
+
+    const physicalInterior = [
+      { id: 'cockpit', title: 'Cockpit', items: ['General Appearance', 'Displays', 'Windows (scratched/nicks/delamination)', 'Seats – Conditions & Operation', 'Floor Covering', "Owner's Identification Plate"], required_photos: ['⚠️ REQUIRED: General View', '⚠️ REQUIRED: Captain Seat & Instrumentation', '⚠️ REQUIRED: First Officer Seat & Instrumentation'] },
+      { id: 'cabin', title: 'Cabin', items: ['General Appearance', 'Windows', 'Class Divider', 'Seats – Condition and Operation', 'Attendant Seats', 'Attendant Emergency Stowage', 'Floor Covering', 'Ceiling Panels', 'Stowage Bins', 'PSUs', 'Sidewall Linings', 'Dado Panels', 'Windscreen', 'Emergency Exits', 'In-Flight Entertainment System', 'Video Monitors'], required_photos: ['⚠️ REQUIRED: Each class looking aft', '⚠️ REQUIRED: Each class looking forward', 'Seat details', 'IFE system', 'Emergency exits'] },
+      { id: 'galley_g1', title: 'Forward Galley [G1]', items: ['General Appearance', 'Floor Covering', 'Work tables', 'Latches', 'Containers & Carts', 'Ovens', 'Coffee maker', 'Hot Pots', 'Water Boilers', 'Chillers', 'Entry Service Doors'], required_photos: ['General view', 'Equipment close-ups', 'Floor condition'] },
+      { id: 'galley_g2', title: 'Second Forward Galley [G2]', items: ['General Appearance', 'Floor Covering', 'Work tables', 'Latches', 'Containers & Carts', 'Ovens', 'Coffee maker', 'Hot Pots', 'Water Boilers', 'Chillers', 'Entry Service Doors'], required_photos: ['General view', 'Equipment close-ups', 'Floor condition'] },
+      { id: 'galley_g4b', title: 'Aft Galley [G4B]', items: ['General Appearance', 'Floor Covering', 'Work tables', 'Latches', 'Containers & Carts', 'Ovens', 'Coffee maker', 'Hot Pots', 'Water Boilers', 'Chillers', 'Entry Service Doors'], required_photos: ['General view', 'Equipment close-ups', 'Floor condition'] },
+      { id: 'lav_la', title: 'Forward Lavatory [LA]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
+      { id: 'lav_ld', title: 'Aft Lavatory [LD]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
+      { id: 'lav_le', title: 'Second Aft Lavatory [LE]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
+      { id: 'ee_compartment', title: 'Nose & E&E Compartment', items: ['General Appearance'], required_photos: ['General view', 'Avionics racks', 'Compartment condition'] }
+    ];
+
+    const recordsData = {
+      A: { title: 'A - Certificates', items: [
+        { code: 'A001', title: 'Airworthiness Review Certificate' },
+        { code: 'A002', title: 'Current Certificate of Airworthiness' },
+        { code: 'A004', title: 'Certificate of Registration' },
+        { code: 'A005', title: 'Radio License' },
+        { code: 'A006', title: 'Noise Certificate' },
+        { code: 'A009', title: 'Insurance Certificate' }
+      ] },
+      B: { title: 'B - Aircraft Status Reports', items: [
+        { code: 'B001', title: 'Hour-Cycle Summary' },
+        { code: 'B002', title: 'Airframe AD Status Report (All)' },
+        { code: 'B003', title: 'Appliance AD Status Report' },
+        { code: 'B004', title: 'Airframe SB Status Report' },
+        { code: 'B005', title: 'Appliance SB Status Report' },
+        { code: 'B006', title: 'Component Hard Time Status Report' },
+        { code: 'B007', title: 'OCCM Status Report' },
+        { code: 'B009', title: 'Modification & Engineering Order Status Report' },
+        { code: 'B011', title: 'LDND-Maintenance Program Task Summary Status' },
+        { code: 'B014', title: 'Maintenance Check History Report (Date of Check, Type of Check, TSN & CSN)' },
+        { code: 'B015', title: 'Dent & Damage Status' },
+        { code: 'B023', title: 'Installed Software Status' }
+      ] },
+      C: { title: 'C - Aircraft Configuration', items: [
+        { code: 'C001', title: 'Avionics Fitted Listing with ELT data' },
+        { code: 'C002', title: 'Emergency Equipment Inventory (Only if there has been a change since Delivery)' },
+        { code: 'C004', title: 'Current LOPA (Only if there has been a change since Delivery)' }
+      ] },
+      D: { title: 'D - Aircraft Maintenance Records', items: [
+        { code: 'D001', title: 'AD DFPs (Recently performed AD sample DFPs)' },
+        { code: 'D002', title: 'SB DFPs (Recently performed SB sample DFPs)' },
+        { code: 'D003', title: 'STC - DFPs (If any from current Operator)' },
+        { code: 'D004', title: 'EO-Mods-DFPs (If any from current Operator)' },
+        { code: 'D006', title: 'Dent & Buckle Chart & DFPs (If any from current Operator)' },
+        { code: 'D016', title: 'Aircraft Technical Logs (If available)' },
+        { code: 'D018', title: 'Last Weighing Report (Only if there has been a change since Delivery)' },
+        { code: 'D020', title: 'C Check (and Greater) Packages not already in ATS. Includes CRS (If any from current Operator)' }
+      ] },
+      E: { title: 'E - HT Component Tags (Sample DFPs) by ATA', items: [
+        { code: 'E', title: 'HT Component Tags (Sample DFPs) by ATA' }
+      ] },
+      F: { title: 'F - OCCM Component Tags (Sample DFPs) by ATA', items: [
+        { code: 'F', title: 'OCCM Component Tags (Sample DFPs) by ATA' }
+      ] },
+      H: { title: 'H - Aircraft Statements / Operator Essential Documents', items: [
+        { code: '2001', title: 'Air Operator Certificate (if applicable)' },
+        { code: '2002', title: 'Operator Specification' },
+        { code: '2003', title: 'Operator Approved Maintenance Program' }
+      ] },
+      ESN1: { title: 'Engine #1 - LH', sn_ref: 'engine1_sn', items: [
+        { code: 'I001', title: 'Current LLP Parts Status' },
+        { code: 'I002', title: 'Current Engine Hours/Cycles Summary' },
+        { code: 'I003', title: 'Current AD Status Report' },
+        { code: 'I004', title: 'Current SB Status Report' },
+        { code: 'I005', title: 'Inst-Rem History (If any from current Operator)' },
+        { code: 'I100', title: 'Shop Visit Report(s) - Work scope summary, Engine LLPs, Test Cell Run, Maint. Release' },
+        { code: 'I104', title: 'Engine Condition Monitoring (Take-Off & Cruise)' }
+      ] },
+      ESN2: { title: 'Engine #2 - RH', sn_ref: 'engine2_sn', items: [
+        { code: 'I001', title: 'Current LLP Parts Status' },
+        { code: 'I002', title: 'Current Engine Hours/Cycles Summary' },
+        { code: 'I003', title: 'Current AD Status Report' },
+        { code: 'I004', title: 'Current SB Status Report' },
+        { code: 'I005', title: 'Inst-Rem History (If any from current Operator)' },
+        { code: 'I100', title: 'Shop Visit Report(s) - Work scope summary, Engine LLPs, Test Cell Run, Maint. Release' },
+        { code: 'I104', title: 'Engine Condition Monitoring (Take-Off & Cruise)' }
+      ] },
+      APU: { title: 'APU', sn_ref: 'apu_sn', items: [
+        { code: 'J001', title: 'APU Hour Cycle Summary' },
+        { code: 'J002', title: 'Current APU LLP Status' },
+        { code: 'J005', title: 'APU Inst-Rem History' },
+        { code: 'J101', title: 'Shop Visit Report(s) not already available in ATS' },
+        { code: 'J301', title: 'APU Log Book / Master Record of Installation/Removals' }
+      ] },
+      K: { title: 'K - Landing Gear Status Reports', note: 'Note: Each LG has its own set of checklist', items: [
+        { code: 'K002_NOSE', title: 'Nose LLP Status Report', sn_ref: 'nose_lg_sn' },
+        { code: 'K002_LM', title: 'Left Main LLP Status Report', sn_ref: 'left_lg_sn' },
+        { code: 'K002_RM', title: 'Right Main LLP Status Report', sn_ref: 'right_lg_sn' },
+        { code: 'K003', title: 'Removal/Installation, etc. (If any from current Operator)' },
+        { code: 'K101_NOSE', title: 'Nose LG Repair and OH Data', sn_ref: 'nose_lg_sn' },
+        { code: 'K101_LM', title: 'LMG LG Repair and OH Data', sn_ref: 'left_lg_sn' },
+        { code: 'K101_RM', title: 'RMG LG Repair and OH Data', sn_ref: 'right_lg_sn' },
+        { code: 'K103', title: 'Miscellaneous' }
+      ] }
+    };
+
+    const sampleText = 'Sample entry provided for executive review.';
+
+    function switchView(viewId) {
+      document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.textContent.toLowerCase().includes(viewId)) {
+          btn.classList.add('active');
+        }
+      });
+    }
+
+    function markSaved(input) {
+      const field = input.closest('.field');
+      if (!field) return;
+      field.classList.add('saved');
+      setTimeout(() => field.classList.remove('saved'), 2000);
+      formData[input.id] = input.value;
+      if (input.dataset.populates) {
+        updateSerialNumberDisplays(input.id, input.value);
+      }
+    }
+
+    function updateSerialNumberDisplays(fieldId, value) {
+      const field = generalDataFields.find(item => item.id === fieldId);
+      if (!field || !field.populates) return;
+      field.populates.forEach(targetId => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.textContent = value || '—';
+        }
+      });
+    }
+
+    function handleCondition(radio, remarksId) {
+      const remarks = document.getElementById(remarksId);
+      if (!remarks) return;
+      if (radio.value === 'average' || radio.value === 'poor') {
+        remarks.classList.add('show');
+        const textarea = remarks.querySelector('textarea');
+        if (textarea) textarea.required = true;
+      } else {
+        remarks.classList.remove('show');
+        const textarea = remarks.querySelector('textarea');
+        if (textarea) textarea.required = false;
+      }
+    }
+
+    function handlePhotos(event, gridId) {
+      const grid = document.getElementById(gridId);
+      Array.from(event.target.files).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+        card.innerHTML = `
+          <img src="${url}" alt="${file.name}" />
+          <div class="photo-actions">
+            <button type="button" onclick="viewPhoto('${url}')">👁 View</button>
+            <button type="button" onclick="deletePhoto(this)">× Delete</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function viewPhoto(url) {
+      window.open(url, '_blank');
+    }
+
+    function deletePhoto(btn) {
+      if (confirm('Delete this photo?')) {
+        const card = btn.closest('.photo-card');
+        if (card) {
+          card.remove();
+        }
+      }
+    }
+
+    function handleFileUpload(event, listId, recordCardId) {
+      const list = document.getElementById(listId);
+      Array.from(event.target.files).forEach(file => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+          <span>${file.name}</span>
+          <button type="button" class="button secondary" onclick="deleteFile(this, '${recordCardId}')">Delete</button>
+        `;
+        list.appendChild(item);
+      });
+      const recordCard = document.getElementById(recordCardId);
+      const select = recordCard.querySelector('select');
+      select.value = 'yes';
+      updateRecordStatus(select);
+    }
+
+    function deleteFile(btn, recordCardId) {
+      const item = btn.closest('.file-item');
+      if (item) item.remove();
+      const recordCard = document.getElementById(recordCardId);
+      const list = recordCard.querySelector('.file-list');
+      if (!list.children.length) {
+        const select = recordCard.querySelector('select');
+        select.value = 'no';
+        updateRecordStatus(select);
+      }
+    }
+
+    function updateRecordStatus(select) {
+      select.classList.remove('status-yes', 'status-no', 'status-na');
+      if (select.value === 'yes') select.classList.add('status-yes');
+      if (select.value === 'no') select.classList.add('status-no');
+      if (select.value === 'na') select.classList.add('status-na');
+    }
+
+    function addContactRow(tableId) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><input type="text" value="" oninput="markSaved(this)" /></td>
+        <td><input type="text" value="" oninput="markSaved(this)" /></td>
+        <td><input type="text" value="" oninput="markSaved(this)" /></td>
+        <td><input type="email" value="" oninput="markSaved(this)" /></td>
+        <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
+      `;
+      tbody.appendChild(row);
+    }
+
+    function deleteRow(btn) {
+      const row = btn.closest('tr');
+      const tbody = row.parentElement;
+      if (tbody.children.length > 1) {
+        row.remove();
+      }
+    }
+
+    function renderGeneralData() {
+      const container = document.getElementById('general-data');
+      generalDataFields.forEach(field => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'field';
+        wrapper.innerHTML = `<label for="${field.id}">${field.label}</label>`;
+        let input;
+        if (field.type === 'select') {
+          input = document.createElement('select');
+          input.id = field.id;
+          field.options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            if (option === field.default) opt.selected = true;
+            input.appendChild(opt);
+          });
+        } else {
+          input = document.createElement('input');
+          input.type = field.type;
+          input.placeholder = field.placeholder || '';
+          input.id = field.id;
+          input.value = field.sample || '';
+        }
+        if (field.populates) {
+          input.dataset.populates = 'true';
+        }
+        input.addEventListener('input', () => markSaved(input));
+        input.addEventListener('change', () => markSaved(input));
+        wrapper.appendChild(input);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        wrapper.appendChild(indicator);
+        container.appendChild(wrapper);
+        if (field.sample) {
+          formData[field.id] = field.sample;
+          if (field.populates) updateSerialNumberDisplays(field.id, field.sample);
+        }
+      });
+    }
+
+    function renderExecutiveSummary() {
+      const container = document.getElementById('executive-summary');
+      const addQuestions = (section, questions) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.innerHTML = `<h3>${section}</h3>`;
+        questions.forEach(question => {
+          const field = document.createElement('div');
+          field.className = 'field';
+          field.innerHTML = `<label for="${question.id}">${question.label}</label>`;
+          const textarea = document.createElement('textarea');
+          textarea.id = question.id;
+          textarea.rows = question.rows || 3;
+          textarea.value = sampleText;
+          textarea.addEventListener('input', () => markSaved(textarea));
+          field.appendChild(textarea);
+          const indicator = document.createElement('span');
+          indicator.className = 'save-indicator';
+          indicator.textContent = '✓';
+          field.appendChild(indicator);
+          sectionDiv.appendChild(field);
+        });
+        container.appendChild(sectionDiv);
+      };
+
+      addQuestions(executiveSummary.general_visit.title, executiveSummary.general_visit.questions);
+
+      const contactsSection = document.createElement('div');
+      contactsSection.innerHTML = `<h3>${executiveSummary.operator_contacts.title}</h3>`;
+      const contactsTable = document.createElement('table');
+      contactsTable.id = 'contacts-table';
+      contactsTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>Contact</th>
+            <th>Title</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="Maria Alvarez" oninput="markSaved(this)" /></td>
+            <td><input type="text" value="Maintenance Director" oninput="markSaved(this)" /></td>
+            <td><input type="text" value="+1 202 555 0147" oninput="markSaved(this)" /></td>
+            <td><input type="email" value="maria.alvarez@ara.jet" oninput="markSaved(this)" /></td>
+            <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
+          </tr>
+        </tbody>
+      `;
+      const addRowButton = document.createElement('button');
+      addRowButton.className = 'button';
+      addRowButton.textContent = 'Add Contact';
+      addRowButton.type = 'button';
+      addRowButton.style.marginTop = '10px';
+      addRowButton.addEventListener('click', () => addContactRow('contacts-table'));
+      contactsSection.appendChild(contactsTable);
+      contactsSection.appendChild(addRowButton);
+      container.appendChild(contactsSection);
+
+      const findingsSection = document.createElement('div');
+      findingsSection.innerHTML = `<h3>${executiveSummary.inspection_findings.title}</h3>`;
+      Object.values(executiveSummary.inspection_findings.subsections).forEach(sub => {
+        const subDiv = document.createElement('div');
+        subDiv.innerHTML = `<h4>${sub.title}</h4>`;
+        if (sub.subtitle) {
+          const subtitle = document.createElement('p');
+          subtitle.textContent = sub.subtitle;
+          subDiv.appendChild(subtitle);
+        }
+        (sub.questions || sub.items).forEach(item => {
+          const field = document.createElement('div');
+          field.className = 'field';
+          let labelText = item.label;
+          if (item.sn_ref) {
+            labelText += ` — S/N: <span id="sn_value_${item.sn_ref === 'engine1_sn' ? 'engine1' : item.sn_ref === 'engine2_sn' ? 'engine2' : 'apu'}">${formData[item.sn_ref] || '—'}</span>`;
+          }
+          field.innerHTML = `<label>${labelText}</label>`;
+          const textarea = document.createElement('textarea');
+          textarea.id = item.id;
+          textarea.placeholder = item.placeholder || '';
+          textarea.value = sampleText;
+          textarea.addEventListener('input', () => markSaved(textarea));
+          field.appendChild(textarea);
+          const indicator = document.createElement('span');
+          indicator.className = 'save-indicator';
+          indicator.textContent = '✓';
+          field.appendChild(indicator);
+          subDiv.appendChild(field);
+        });
+        findingsSection.appendChild(subDiv);
+      });
+      container.appendChild(findingsSection);
+
+      const modsSection = document.createElement('div');
+      modsSection.innerHTML = `<h3>${executiveSummary.mods_stcs.title}</h3><p>${executiveSummary.mods_stcs.note}</p>`;
+      const modsTable = document.createElement('table');
+      modsTable.id = 'mods-table';
+      modsTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>ATA</th>
+            <th>Title</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="27" oninput="markSaved(this)" /></td>
+            <td><input type="text" value="Winglet Retrofit" oninput="markSaved(this)" /></td>
+            <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
+          </tr>
+        </tbody>
+      `;
+      const addModButton = document.createElement('button');
+      addModButton.className = 'button';
+      addModButton.textContent = 'Add Mod / STC';
+      addModButton.type = 'button';
+      addModButton.style.marginTop = '10px';
+      addModButton.addEventListener('click', () => {
+        const tbody = modsTable.querySelector('tbody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><input type="text" oninput="markSaved(this)" /></td>
+          <td><input type="text" oninput="markSaved(this)" /></td>
+          <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+      modsSection.appendChild(modsTable);
+      modsSection.appendChild(addModButton);
+      container.appendChild(modsSection);
+
+      const differencesSection = document.createElement('div');
+      differencesSection.innerHTML = `<h3>${executiveSummary.differences.title}</h3>`;
+      executiveSummary.differences.items.forEach(item => {
+        const field = document.createElement('div');
+        field.className = 'field';
+        field.innerHTML = `<label for="${item.id}">${item.label}</label>`;
+        const textarea = document.createElement('textarea');
+        textarea.id = item.id;
+        textarea.value = sampleText;
+        textarea.addEventListener('input', () => markSaved(textarea));
+        field.appendChild(textarea);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        field.appendChild(indicator);
+        differencesSection.appendChild(field);
+      });
+      container.appendChild(differencesSection);
+
+      const followupSection = document.createElement('div');
+      followupSection.innerHTML = `<h3>${executiveSummary.followup.title}</h3>`;
+      executiveSummary.followup.items.forEach(item => {
+        const field = document.createElement('div');
+        field.className = 'field';
+        field.innerHTML = `<label for="${item.id}">${item.label}</label>`;
+        const textarea = document.createElement('textarea');
+        textarea.id = item.id;
+        textarea.value = sampleText;
+        textarea.addEventListener('input', () => markSaved(textarea));
+        field.appendChild(textarea);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        field.appendChild(indicator);
+        followupSection.appendChild(field);
+      });
+      container.appendChild(followupSection);
+    }
+
+    function renderAreas(areas, containerId) {
+      const container = document.getElementById(containerId);
+      areas.forEach(area => {
+        const card = document.createElement('div');
+        card.className = 'area-card';
+        const snTag = area.sn_ref ? `<span class="sn-tag">S/N: <span id="sn_value_${area.sn_ref === 'engine1_sn' ? 'engine1' : 'engine2'}">${formData[area.sn_ref] || '—'}</span></span>` : '';
+        card.innerHTML = `
+          <div class="area-header">
+            <h4>${area.title}</h4>
+            ${snTag}
+          </div>
+          <div class="inline-note">
+            <strong>Required Photos:</strong> ${area.required_photos.join(', ')}
+          </div>
+        `;
+        area.items.forEach((item, index) => {
+          const row = document.createElement('div');
+          row.className = 'condition-row';
+          const remarksId = `${area.id}_remarks_${index}`;
+          row.innerHTML = `
+            <div>
+              <strong>${item}</strong>
+              <div id="${remarksId}" class="remarks">
+                <label>Remarks</label>
+                <textarea placeholder="Required: Explain condition in detail..." oninput="markSaved(this)"></textarea>
+              </div>
+            </div>
+            <div class="radio-group">
+              <label><input type="radio" name="${area.id}_cond_${index}" value="good" checked onchange="handleCondition(this, '${remarksId}')"> Good</label>
+              <label><input type="radio" name="${area.id}_cond_${index}" value="average" onchange="handleCondition(this, '${remarksId}')"> Average</label>
+              <label><input type="radio" name="${area.id}_cond_${index}" value="poor" onchange="handleCondition(this, '${remarksId}')"> Poor</label>
+            </div>
+          `;
+          card.appendChild(row);
+        });
+        const photoInputId = `${area.id}_photos`;
+        const gridId = `${area.id}_grid`;
+        const photoSection = document.createElement('div');
+        photoSection.className = 'field';
+        photoSection.innerHTML = `
+          <label for="${photoInputId}">Photos</label>
+          <input id="${photoInputId}" type="file" accept="image/*" multiple capture="environment" onchange="handlePhotos(event, '${gridId}')" />
+          <div id="${gridId}" class="photo-grid"></div>
+        `;
+        card.appendChild(photoSection);
+        container.appendChild(card);
+      });
+    }
+
+    function renderRecords() {
+      const container = document.getElementById('records-container');
+      Object.entries(recordsData).forEach(([key, section]) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'record-section';
+        const title = document.createElement('h3');
+        title.textContent = section.title;
+        sectionDiv.appendChild(title);
+        if (section.note) {
+          const note = document.createElement('p');
+          note.textContent = section.note;
+          sectionDiv.appendChild(note);
+        }
+        if (section.sn_ref) {
+          const sn = document.createElement('p');
+          const snValueId = `sn_records_${key}`;
+          sn.innerHTML = `Assigned Serial Number: <strong id="${snValueId}">${formData[section.sn_ref] || '—'}</strong>`;
+          sectionDiv.appendChild(sn);
+        }
+        section.items.forEach((item, index) => {
+          const card = document.createElement('div');
+          const recordCardId = `record_${key}_${index}`;
+          card.className = 'record-card';
+          card.id = recordCardId;
+          const snSpan = item.sn_ref ? `<span class="sn-tag">S/N: <span id="sn_rec_${item.code}">${formData[item.sn_ref] || '—'}</span></span>` : '';
+          card.innerHTML = `
+            <div class="record-header">
+              <div>
+                <strong>${item.code} — ${item.title}</strong>
+                ${snSpan}
+              </div>
+              <div class="record-actions">
+                <select class="record-status-select status-no" onchange="updateRecordStatus(this)">
+                  <option value="yes">✓ Yes</option>
+                  <option value="no" selected>No</option>
+                  <option value="na">N/A</option>
+                </select>
+                <label><input type="checkbox" /> Already on ATS</label>
+              </div>
+            </div>
+            <div class="file-list" id="filelist_${recordCardId}"></div>
+            <div style="margin-top:8px;">
+              <label class="button secondary" for="file_${recordCardId}">+ Add File</label>
+              <input id="file_${recordCardId}" type="file" multiple style="display:none;" onchange="handleFileUpload(event, 'filelist_${recordCardId}', '${recordCardId}')" />
+            </div>
+          `;
+          sectionDiv.appendChild(card);
+        });
+        container.appendChild(sectionDiv);
+      });
+    }
+
+    renderGeneralData();
+    renderExecutiveSummary();
+    renderAreas(physicalExterior, 'exterior-areas');
+    renderAreas(physicalInterior, 'interior-areas');
+    renderRecords();
+
+    document.querySelectorAll('.record-status-select').forEach(select => updateRecordStatus(select));
+  </script>
 </body>
 </html>
