@@ -1,12 +1,682 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AIR</title>
+  <title>DAE Aircraft Inspection</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>AIR</h1>
-  <p>Deployment OK.</p>
+<body class="bg-slate-50 text-slate-900 antialiased">
+  <header class="sticky top-0 z-20 border-b border-slate-200 bg-white">
+    <div class="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-4 sm:px-6">
+      <div class="flex items-center gap-3">
+        <span class="h-3 w-3 rounded-full bg-red-700"></span>
+        <div>
+          <h1 class="text-lg font-semibold text-slate-900">DAE Aircraft Inspection</h1>
+          <p class="text-xs text-slate-500">Executive inspection workflow</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="text-xs font-medium text-slate-400">V0002</span>
+        <div class="text-right">
+          <p id="submit-status" class="text-xs text-slate-500">Complete all sections to submit.</p>
+          <button id="submit-btn" class="rounded-full bg-red-700 px-4 py-2 text-xs font-semibold text-white disabled:bg-red-200 disabled:text-red-400" disabled>
+            Submit Report
+          </button>
+        </div>
+      </div>
+    </div>
+    <nav class="mx-auto flex w-full max-w-7xl gap-2 overflow-x-auto px-4 pb-3 sm:px-6">
+      <button class="nav-btn rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-600" data-view="dashboard">Dashboard</button>
+      <button class="nav-btn rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-400" data-view="general" disabled>General Report</button>
+      <button class="nav-btn rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-400" data-view="technical" disabled>Technical Spec</button>
+      <button class="nav-btn rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-400" data-view="inspection" disabled>Physical Inspection</button>
+      <button class="nav-btn rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-400" data-view="records" disabled>Records</button>
+      <button class="nav-btn rounded-full border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-400" data-view="supporting" disabled>Supporting Docs</button>
+    </nav>
+  </header>
+
+  <main class="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6">
+    <!-- Dashboard -->
+    <section id="dashboard" class="view">
+      <div class="grid gap-4 md:grid-cols-4">
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase text-slate-500">Active Inspections</p>
+          <p class="text-2xl font-semibold text-slate-900">5</p>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase text-slate-500">Completed This Month</p>
+          <p class="text-2xl font-semibold text-slate-900">3</p>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase text-slate-500">Avg Completion Time</p>
+          <p class="text-2xl font-semibold text-slate-900">8.2 days</p>
+        </div>
+        <div class="rounded-lg border border-slate-200 bg-white p-4 shadow-sm">
+          <p class="text-xs font-semibold uppercase text-slate-500">Pending Review</p>
+          <p class="text-2xl font-semibold text-slate-900">2</p>
+        </div>
+      </div>
+
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold text-slate-900">Projects</h2>
+        <p class="mt-1 text-xs text-slate-500">Select an aircraft to open its AIR report.</p>
+        <div class="mt-4 overflow-x-auto">
+          <table class="min-w-full text-left text-xs text-slate-600">
+            <thead class="text-[11px] uppercase text-slate-400">
+              <tr>
+                <th class="px-2 py-2">Aircraft</th>
+                <th class="px-2 py-2">Model</th>
+                <th class="px-2 py-2">Operator</th>
+                <th class="px-2 py-2">FM User</th>
+                <th class="px-2 py-2">Inspector</th>
+                <th class="px-2 py-2">Status</th>
+                <th class="px-2 py-2">Date</th>
+                <th class="px-2 py-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-100">
+              <tr class="cursor-pointer" data-project="42825">
+                <td class="px-2 py-3 font-semibold text-slate-900">MSN 42825</td>
+                <td class="px-2 py-3">B737-8</td>
+                <td class="px-2 py-3">Arajet</td>
+                <td class="px-2 py-3">Giancarlo Malessani</td>
+                <td class="px-2 py-3">Peter Haefeli</td>
+                <td class="px-2 py-3"><span class="rounded-full bg-amber-100 px-2 py-1 text-[10px] font-semibold text-amber-700">In Progress</span></td>
+                <td class="px-2 py-3">Nov 03, 2025</td>
+                <td class="px-2 py-3">
+                  <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">View</button>
+                </td>
+              </tr>
+              <tr class="cursor-pointer" data-project="42833">
+                <td class="px-2 py-3 font-semibold text-slate-900">MSN 42833</td>
+                <td class="px-2 py-3">B737-8</td>
+                <td class="px-2 py-3">Arajet</td>
+                <td class="px-2 py-3">Giancarlo Malessani</td>
+                <td class="px-2 py-3">Jack Smit</td>
+                <td class="px-2 py-3"><span class="rounded-full bg-emerald-100 px-2 py-1 text-[10px] font-semibold text-emerald-700">Approved</span></td>
+                <td class="px-2 py-3">Oct 28, 2025</td>
+                <td class="px-2 py-3">
+                  <div class="flex flex-wrap gap-1">
+                    <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">Export xRM</button>
+                    <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">Export ATS</button>
+                    <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">Summary Spec</button>
+                    <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">AIR Report</button>
+                  </div>
+                </td>
+              </tr>
+              <tr class="cursor-pointer" data-project="7020">
+                <td class="px-2 py-3 font-semibold text-slate-900">MSN 7020</td>
+                <td class="px-2 py-3">A320</td>
+                <td class="px-2 py-3">Viva</td>
+                <td class="px-2 py-3">Giancarlo Malessani</td>
+                <td class="px-2 py-3">Rick McIlven</td>
+                <td class="px-2 py-3"><span class="rounded-full bg-sky-100 px-2 py-1 text-[10px] font-semibold text-sky-700">Assigned</span></td>
+                <td class="px-2 py-3">Nov 10, 2025</td>
+                <td class="px-2 py-3">
+                  <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">View</button>
+                </td>
+              </tr>
+              <tr class="cursor-pointer" data-project="39426">
+                <td class="px-2 py-3 font-semibold text-slate-900">MSN 39426</td>
+                <td class="px-2 py-3">B737-800</td>
+                <td class="px-2 py-3">Aerolineas Argentinas</td>
+                <td class="px-2 py-3">Claus Schmetkamp</td>
+                <td class="px-2 py-3">Peter Haefeli</td>
+                <td class="px-2 py-3"><span class="rounded-full bg-amber-100 px-2 py-1 text-[10px] font-semibold text-amber-700">In Progress</span></td>
+                <td class="px-2 py-3">Nov 06, 2025</td>
+                <td class="px-2 py-3">
+                  <button class="rounded-full border border-slate-200 px-3 py-1 text-[11px] font-semibold text-slate-600">View</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- General Report -->
+    <section id="general" class="view hidden">
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="text-lg font-semibold">Aircraft Identification & Status</h2>
+          <span id="progress-general" class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-500">0 / 12 completed</span>
+        </div>
+        <div id="general-fields" class="mt-4 grid gap-4 md:grid-cols-2"></div>
+      </div>
+
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="text-lg font-semibold">Executive Summary</h2>
+          <span id="progress-executive" class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-500">0 / 0 completed</span>
+        </div>
+        <div id="executive-fields" class="mt-4 space-y-6"></div>
+      </div>
+    </section>
+
+    <!-- Technical Spec -->
+    <section id="technical" class="view hidden">
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="text-lg font-semibold">Technical Specification</h2>
+          <span id="progress-technical" class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-500">0 / 0 completed</span>
+        </div>
+        <div class="mt-4 grid gap-4 md:grid-cols-2" id="technical-fields"></div>
+      </div>
+
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="text-base font-semibold">Avionics & Systems</h3>
+        <div class="mt-4 grid gap-4 md:grid-cols-2" id="avionics-fields"></div>
+        <div class="mt-4">
+          <div class="flex items-center justify-between">
+            <h4 class="text-sm font-semibold text-slate-700">Avionics Components (repeatable)</h4>
+            <button class="rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" data-add="avionics">+ Add row</button>
+          </div>
+          <div id="avionics-rows" class="mt-3 space-y-2"></div>
+        </div>
+      </div>
+
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h3 class="text-base font-semibold">Lavatories Configuration (repeatable)</h3>
+        <div class="mt-4 space-y-2" id="lavatory-rows"></div>
+        <button class="mt-3 rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" data-add="lavatory">+ Add lavatory</button>
+      </div>
+    </section>
+
+    <!-- Physical Inspection -->
+    <section id="inspection" class="view hidden">
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Structure & Exterior</h2>
+        <div id="inspection-exterior" class="mt-4 space-y-4"></div>
+      </div>
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Engines</h2>
+        <div id="inspection-engines" class="mt-4 space-y-4"></div>
+      </div>
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">APU</h2>
+        <div id="inspection-apu" class="mt-4 space-y-4"></div>
+      </div>
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Landing Gear</h2>
+        <div id="inspection-gear" class="mt-4 space-y-4"></div>
+      </div>
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Cabin Interior</h2>
+        <div id="inspection-cabin" class="mt-4 space-y-4"></div>
+      </div>
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Galleys & Lavatories</h2>
+        <div id="inspection-galleys" class="mt-4 space-y-4"></div>
+      </div>
+      <div class="mt-6 rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Seats (Passenger / Attendant)</h2>
+        <div id="inspection-seats" class="mt-4 space-y-4"></div>
+      </div>
+    </section>
+
+    <!-- Records -->
+    <section id="records" class="view hidden">
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <h2 class="text-lg font-semibold">Documents & Records</h2>
+          <span id="progress-records" class="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs text-slate-500">0 / 0 completed</span>
+        </div>
+        <div id="records-table" class="mt-4 space-y-6"></div>
+      </div>
+    </section>
+
+    <!-- Supporting Docs -->
+    <section id="supporting" class="view hidden">
+      <div class="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
+        <h2 class="text-lg font-semibold">Supporting Docs</h2>
+        <div class="mt-4 grid gap-4 md:grid-cols-2">
+          <div>
+            <h3 class="text-sm font-semibold text-slate-700">Inspection Locations</h3>
+            <div id="visit-rows" class="mt-2 space-y-2"></div>
+            <button class="mt-3 rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" data-add="visit">+ Add visit</button>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-slate-700">Supporting Documents</h3>
+            <div id="support-rows" class="mt-2 space-y-2"></div>
+            <button class="mt-3 rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-600" data-add="support">+ Add document</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const formData = {};
+    let currentProject = null;
+
+    const generalFields = [
+      { id: 'mission_type', label: 'Mission Type', type: 'select', options: ['Audit', 'Return', 'Delivery'] },
+      { id: 'aircraft_type', label: 'Aircraft Type', type: 'text' },
+      { id: 'aircraft_model', label: 'Aircraft Model', type: 'text' },
+      { id: 'msn', label: 'MSN', type: 'text' },
+      { id: 'registration', label: 'Registration', type: 'text' },
+      { id: 'operator', label: 'Operator', type: 'text' },
+      { id: 'date_of_manufacture', label: 'Date of Manufacture', type: 'date' },
+      { id: 'inspection_report_date', label: 'Inspection Report Date', type: 'date' },
+      { id: 'physical_inspection_date', label: 'Physical Inspection Date', type: 'date' },
+      { id: 'report_prepared_by', label: 'Report Prepared By', type: 'text' },
+      { id: 'inspector_name', label: 'Inspector Name', type: 'text' },
+      { id: 'inspection_locations_summary', label: 'Inspection Locations Summary', type: 'textarea' }
+    ];
+
+    const executiveFields = [
+      { id: 'visit_purpose', label: 'Purpose of visit, location(s) and date(s)', type: 'textarea' },
+      { id: 'operator_cooperation', label: 'Operator cooperation and responsiveness', type: 'textarea' },
+      { id: 'facilities_description', label: 'Maintenance facilities description', type: 'textarea' },
+      { id: 'issues_concerns', label: 'Issues / concerns / recommendations', type: 'textarea' },
+      { id: 'quick_overview', label: 'Quick overview of findings and conclusions', type: 'textarea' }
+    ];
+
+    const technicalFields = [
+      { id: 'as_of_date', label: 'As of date', type: 'date' },
+      { id: 'total_airframe_hours', label: 'Total airframe hours', type: 'number' },
+      { id: 'total_airframe_cycles', label: 'Total airframe cycles', type: 'number' },
+      { id: 'mtow_kg', label: 'MTOW (kg)', type: 'number' },
+      { id: 'mlw_kg', label: 'MLW (kg)', type: 'number' },
+      { id: 'mzfw_kg', label: 'MZFW (kg)', type: 'number' },
+      { id: 'seating_configuration', label: 'Seating configuration', type: 'text' },
+      { id: 'fuel_capacity', label: 'Fuel capacity', type: 'text' }
+    ];
+
+    const avionicsFields = [
+      { id: 'vhf_8_33_khz', label: 'VHF 8.33 kHz', type: 'select', options: ['Yes', 'No', 'N/A'] },
+      { id: 'fixed_elt', label: 'Fixed ELT', type: 'select', options: ['Yes', 'No', 'N/A'] },
+      { id: 'portable_elt', label: 'Portable ELT', type: 'select', options: ['Yes', 'No', 'N/A'] },
+      { id: 'security_door_installed', label: 'Security door installed', type: 'select', options: ['Yes', 'No', 'N/A'] },
+      { id: 'ife_installed', label: 'IFE installed', type: 'select', options: ['Yes', 'No', 'Partial'] },
+      { id: 'etops_capable', label: 'ETOPS capable', type: 'select', options: ['Yes', 'No'] },
+      { id: 'etops_capable_minutes', label: 'ETOPS minutes', type: 'number' },
+      { id: 'autoland_capability', label: 'Autoland capability', type: 'select', options: ['CAT I', 'CAT II', 'CAT IIIA', 'CAT IIIB', 'Unknown'] }
+    ];
+
+    const inspectionAreas = {
+      exterior: [
+        { title: 'Left Forward Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'] },
+        { title: 'Right Wing', items: ['Evidence of Leaks', 'Paint', 'Leading Edge', 'Fueling Station', 'Trailing Edge'] }
+      ],
+      engines: [
+        { title: 'Engine #1 - LH', items: ['Inlet', 'Fan Blades', 'Evidence of Leaks', 'Pylon'] },
+        { title: 'Engine #2 - RH', items: ['Inlet', 'Service Panels', 'Evidence of Leaks', 'Pylon'] }
+      ],
+      apu: [
+        { title: 'APU Compartment', items: ['APU Bay Condition', 'Exhaust Area', 'Evidence of Leaks'] }
+      ],
+      gear: [
+        { title: 'Nose Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Evidence of Leaks'] },
+        { title: 'Main Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Evidence of Leaks'] }
+      ],
+      cabin: [
+        { title: 'Cabin', items: ['General Appearance', 'Windows', 'PSUs', 'Emergency Exits'] }
+      ],
+      galleys: [
+        { title: 'Galleys', items: ['General Appearance', 'Work tables', 'Equipment', 'Floor condition'] },
+        { title: 'Lavatories', items: ['General Appearance', 'Floor condition', 'Fixtures'] }
+      ],
+      seats: [
+        { title: 'Passenger Seats', items: ['Seat condition', 'Seat belts', 'IFEs'] },
+        { title: 'Attendant Seats', items: ['Seat condition', 'Harness', 'Operation'] }
+      ]
+    };
+
+    const recordsSections = {
+      A: { title: 'A - Certificates', items: ['A001 Airworthiness Review Certificate', 'A002 Certificate of Airworthiness', 'A004 Certificate of Registration'] },
+      B: { title: 'B - Aircraft Status Reports', items: ['B001 Hour-Cycle Summary', 'B002 Airframe AD Status Report', 'B015 Dent & Damage Status'] },
+      ESN1: { title: 'Engine #1 Package', items: ['I001 LLP Parts Status', 'I100 Shop Visit Report'] },
+      ESN2: { title: 'Engine #2 Package', items: ['I001 LLP Parts Status', 'I100 Shop Visit Report'] },
+      APU: { title: 'APU Package', items: ['J001 APU Hour Cycle Summary', 'J301 APU Log Book'] }
+    };
+
+    const projects = {
+      '42825': { mission_type: 'Audit', aircraft_type: 'Boeing 737-8', aircraft_model: 'B737-8', msn: '42825', registration: 'HI1103', operator: 'Arajet', inspector_name: 'Peter Haefeli' },
+      '42833': { mission_type: 'Audit', aircraft_type: 'Boeing 737-8', aircraft_model: 'B737-8', msn: '42833', registration: 'HI1109', operator: 'Arajet', inspector_name: 'Jack Smit' },
+      '7020': { mission_type: '', aircraft_type: '', aircraft_model: '', msn: '7020', registration: '', operator: 'Viva', inspector_name: 'Rick McIlven' },
+      '39426': { mission_type: 'Return', aircraft_type: 'Boeing 737-800', aircraft_model: 'B737-800', msn: '39426', registration: 'LV-GVF', operator: 'Aerolineas Argentinas', inspector_name: 'Peter Haefeli' }
+    };
+
+    const setView = (viewId) => {
+      if (!currentProject && viewId !== 'dashboard') return;
+      document.querySelectorAll('.view').forEach(view => view.classList.add('hidden'));
+      document.getElementById(viewId).classList.remove('hidden');
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-red-700', 'border-red-700');
+        if (btn.dataset.view === viewId) {
+          btn.classList.add('text-red-700', 'border-red-700');
+        }
+      });
+    };
+
+    const enableTabs = () => {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.view !== 'dashboard') {
+          btn.disabled = false;
+          btn.classList.remove('text-slate-400');
+          btn.classList.add('text-slate-600');
+        }
+      });
+    };
+
+    const renderFields = (containerId, fields) => {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      fields.forEach(field => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'flex flex-col gap-1';
+        const label = document.createElement('label');
+        label.textContent = field.label;
+        label.className = 'text-xs font-medium text-slate-500';
+        wrapper.appendChild(label);
+        let input;
+        if (field.type === 'textarea') {
+          input = document.createElement('textarea');
+          input.rows = 4;
+          input.className = 'w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+        } else if (field.type === 'select') {
+          input = document.createElement('select');
+          input.className = 'w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+          const placeholder = document.createElement('option');
+          placeholder.value = '';
+          placeholder.textContent = 'Select';
+          placeholder.disabled = true;
+          placeholder.selected = true;
+          input.appendChild(placeholder);
+          field.options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            input.appendChild(opt);
+          });
+        } else {
+          input = document.createElement('input');
+          input.type = field.type;
+          input.className = 'w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+        }
+        input.id = field.id;
+        input.addEventListener('input', updateProgress);
+        wrapper.appendChild(input);
+        container.appendChild(wrapper);
+      });
+    };
+
+    const renderExecutive = () => {
+      const container = document.getElementById('executive-fields');
+      container.innerHTML = '';
+      executiveFields.forEach(field => {
+        const block = document.createElement('div');
+        block.className = 'flex flex-col gap-1';
+        const label = document.createElement('label');
+        label.textContent = field.label;
+        label.className = 'text-xs font-medium text-slate-500';
+        const textarea = document.createElement('textarea');
+        textarea.rows = 4;
+        textarea.id = field.id;
+        textarea.className = 'w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+        textarea.addEventListener('input', updateProgress);
+        block.appendChild(label);
+        block.appendChild(textarea);
+        container.appendChild(block);
+      });
+    };
+
+    const renderInspection = () => {
+      const createArea = (area) => {
+        const card = document.createElement('div');
+        card.className = 'rounded-lg border border-slate-200 bg-white p-4 shadow-sm';
+        const title = document.createElement('h4');
+        title.textContent = area.title;
+        title.className = 'text-sm font-semibold text-slate-800';
+        card.appendChild(title);
+
+        area.items.forEach((item, idx) => {
+          const row = document.createElement('div');
+          row.className = 'mt-3 grid gap-3 border-t border-slate-100 pt-3 md:grid-cols-[1fr_220px]';
+          const label = document.createElement('div');
+          label.innerHTML = `<p class="text-sm font-medium text-slate-700">${item}</p>`;
+          const remarks = document.createElement('textarea');
+          remarks.rows = 3;
+          remarks.className = 'mt-2 hidden w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+          remarks.placeholder = 'Required: explain condition in detail...';
+          label.appendChild(remarks);
+
+          const control = document.createElement('div');
+          const isLeak = item.toLowerCase().includes('evidence');
+          if (isLeak) {
+            const select = document.createElement('select');
+            select.className = 'w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+            ['Select', 'No evidence', 'Evidence observed', 'Not inspected'].forEach((opt, index) => {
+              const option = document.createElement('option');
+              option.textContent = opt;
+              option.value = index === 0 ? '' : opt;
+              if (index === 0) option.disabled = true;
+              if (index === 0) option.selected = true;
+              select.appendChild(option);
+            });
+            select.addEventListener('change', () => {
+              if (select.value === 'Evidence observed') {
+                remarks.classList.remove('hidden');
+              } else {
+                remarks.classList.add('hidden');
+              }
+              updateProgress();
+            });
+            control.appendChild(select);
+          } else {
+            const group = document.createElement('div');
+            group.className = 'grid grid-cols-3 gap-2 text-xs text-slate-600';
+            ['Good', 'Average', 'Poor'].forEach(option => {
+              const labelWrap = document.createElement('label');
+              labelWrap.className = 'flex items-center gap-2';
+              const radio = document.createElement('input');
+              radio.type = 'radio';
+              radio.name = `${area.title}-${idx}`;
+              radio.value = option.toLowerCase();
+              radio.addEventListener('change', () => {
+                if (radio.value !== 'good') {
+                  remarks.classList.remove('hidden');
+                } else {
+                  remarks.classList.add('hidden');
+                }
+                updateProgress();
+              });
+              labelWrap.appendChild(radio);
+              labelWrap.appendChild(document.createTextNode(option));
+              group.appendChild(labelWrap);
+            });
+            control.appendChild(group);
+          }
+          row.appendChild(label);
+          row.appendChild(control);
+          card.appendChild(row);
+        });
+
+        const notes = document.createElement('textarea');
+        notes.rows = 3;
+        notes.placeholder = 'Additional auditor comments';
+        notes.className = 'mt-4 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-700 focus:border-red-500 focus:outline-none';
+        notes.addEventListener('input', updateProgress);
+        card.appendChild(notes);
+
+        const photoWrap = document.createElement('div');
+        photoWrap.className = 'mt-4';
+        photoWrap.innerHTML = `
+          <p class="text-xs font-semibold text-slate-500">Required photos</p>
+          <p class="text-xs text-slate-500">Capture or upload multiple images for this area.</p>
+        `;
+        const photoInput = document.createElement('input');
+        photoInput.type = 'file';
+        photoInput.multiple = true;
+        photoInput.accept = 'image/*';
+        photoInput.className = 'mt-2 w-full rounded-md border border-slate-200 px-3 py-2 text-xs text-slate-500';
+        photoWrap.appendChild(photoInput);
+        card.appendChild(photoWrap);
+
+        return card;
+      };
+
+      const renderGroup = (containerId, areas) => {
+        const container = document.getElementById(containerId);
+        container.innerHTML = '';
+        areas.forEach(area => container.appendChild(createArea(area)));
+      };
+
+      renderGroup('inspection-exterior', inspectionAreas.exterior);
+      renderGroup('inspection-engines', inspectionAreas.engines);
+      renderGroup('inspection-apu', inspectionAreas.apu);
+      renderGroup('inspection-gear', inspectionAreas.gear);
+      renderGroup('inspection-cabin', inspectionAreas.cabin);
+      renderGroup('inspection-galleys', inspectionAreas.galleys);
+      renderGroup('inspection-seats', inspectionAreas.seats);
+    };
+
+    const renderRecords = () => {
+      const container = document.getElementById('records-table');
+      container.innerHTML = '';
+      Object.values(recordsSections).forEach(section => {
+        const block = document.createElement('div');
+        block.className = 'rounded-lg border border-slate-200 bg-white p-4 shadow-sm';
+        block.innerHTML = `<h3 class="text-sm font-semibold text-slate-700">${section.title}</h3>`;
+        const list = document.createElement('div');
+        list.className = 'mt-3 space-y-2';
+        section.items.forEach(item => {
+          const row = document.createElement('div');
+          row.className = 'grid gap-2 rounded-md border border-slate-100 p-3 md:grid-cols-[1fr_120px_120px]';
+          row.innerHTML = `
+            <div>
+              <p class="text-xs font-semibold text-slate-700">${item}</p>
+              <textarea rows="2" class="mt-2 w-full rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600" placeholder="Comments"></textarea>
+            </div>
+            <select class="w-full rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600">
+              <option value="no">No</option>
+              <option value="yes">Yes</option>
+              <option value="na">N/A</option>
+            </select>
+            <input type="file" class="w-full rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-500" />
+          `;
+          list.appendChild(row);
+        });
+        block.appendChild(list);
+        container.appendChild(block);
+      });
+    };
+
+    const renderRepeaterRow = (container, fields) => {
+      const row = document.createElement('div');
+      row.className = 'grid gap-2 rounded-md border border-slate-100 p-3 md:grid-cols-2';
+      fields.forEach(field => {
+        const input = document.createElement('input');
+        input.type = field.type || 'text';
+        input.placeholder = field.placeholder;
+        input.className = 'w-full rounded-md border border-slate-200 px-2 py-1 text-xs text-slate-600';
+        row.appendChild(input);
+      });
+      const remove = document.createElement('button');
+      remove.type = 'button';
+      remove.textContent = 'Remove';
+      remove.className = 'rounded-full border border-slate-200 px-3 py-1 text-xs font-semibold text-slate-500';
+      remove.addEventListener('click', () => row.remove());
+      row.appendChild(remove);
+      container.appendChild(row);
+    };
+
+    const countFilled = (elements) => Array.from(elements).filter(el => el.value && el.value.trim() !== '').length;
+
+    const updateProgress = () => {
+      const generalInputs = document.querySelectorAll('#general-fields input, #general-fields select, #general-fields textarea');
+      const execInputs = document.querySelectorAll('#executive-fields textarea');
+      const techInputs = document.querySelectorAll('#technical-fields input, #technical-fields select, #avionics-fields input, #avionics-fields select');
+
+      const generalFilled = countFilled(generalInputs);
+      const execFilled = countFilled(execInputs);
+      const techFilled = countFilled(techInputs);
+
+      document.getElementById('progress-general').textContent = `${generalFilled} / ${generalInputs.length} completed`;
+      document.getElementById('progress-executive').textContent = `${execFilled} / ${execInputs.length} completed`;
+      document.getElementById('progress-technical').textContent = `${techFilled} / ${techInputs.length} completed`;
+      document.getElementById('progress-records').textContent = `${generalFilled + execFilled + techFilled} / ${generalInputs.length + execInputs.length + techInputs.length} completed`;
+
+      const submitBtn = document.getElementById('submit-btn');
+      if (generalFilled === generalInputs.length && execFilled === execInputs.length && techFilled === techInputs.length) {
+        submitBtn.disabled = false;
+        document.getElementById('submit-status').textContent = 'All sections complete. Ready to submit.';
+      } else {
+        submitBtn.disabled = true;
+        document.getElementById('submit-status').textContent = 'Complete all sections to submit.';
+      }
+    };
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
+
+    document.querySelectorAll('[data-project]').forEach(row => {
+      row.addEventListener('click', () => {
+        currentProject = row.dataset.project;
+        enableTabs();
+        setView('general');
+        generalFields.forEach(field => {
+          const input = document.getElementById(field.id);
+          if (!input) return;
+          input.value = projects[currentProject][field.id] || '';
+        });
+      });
+    });
+
+    document.querySelectorAll('[data-add="avionics"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        renderRepeaterRow(document.getElementById('avionics-rows'), [
+          { placeholder: 'ATA' },
+          { placeholder: 'Component' },
+          { placeholder: 'Manufacturer' },
+          { placeholder: 'Part number' }
+        ]);
+      });
+    });
+
+    document.querySelectorAll('[data-add="lavatory"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        renderRepeaterRow(document.getElementById('lavatory-rows'), [
+          { placeholder: 'Lav name' },
+          { placeholder: 'Location' },
+          { placeholder: 'Model/PN' },
+          { placeholder: 'Manufacturer' }
+        ]);
+      });
+    });
+
+    document.querySelectorAll('[data-add="visit"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        renderRepeaterRow(document.getElementById('visit-rows'), [
+          { placeholder: 'Airport' },
+          { placeholder: 'Date', type: 'date' },
+          { placeholder: 'Conditions' },
+          { placeholder: 'Comments' }
+        ]);
+      });
+    });
+
+    document.querySelectorAll('[data-add="support"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        renderRepeaterRow(document.getElementById('support-rows'), [
+          { placeholder: 'Category' },
+          { placeholder: 'Title' },
+          { placeholder: 'Status' },
+          { placeholder: 'ATS reference' }
+        ]);
+      });
+    });
+
+    renderFields('general-fields', generalFields);
+    renderExecutive();
+    renderFields('technical-fields', technicalFields);
+    renderFields('avionics-fields', avionicsFields);
+    renderInspection();
+    renderRecords();
+    setView('dashboard');
+  </script>
 </body>
 </html>
