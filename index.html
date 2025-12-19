@@ -15,12 +15,12 @@
       --dae-light: #E8EAED;
       --primary: #2b2b2b;
       --secondary: #606a75;
-      --accent: #0a5ec2;
+      --accent: #0066cc;
       --success: #28a745;
       --warning: #ffc107;
       --danger: #dc3545;
       --light: #f8f9fa;
-      --border: #e1e5ea;
+      --border: #dde2e7;
     }
 
     * {
@@ -32,24 +32,16 @@
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
       color: var(--primary);
       background: #f6f7f9;
-      padding-bottom: 80px;
+      padding-bottom: 120px;
     }
 
     header {
-      padding: 18px 24px 12px;
+      padding: 20px 24px 14px;
       background: #fff;
       border-bottom: 1px solid var(--dae-light);
       position: sticky;
       top: 0;
       z-index: 20;
-    }
-
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
     }
 
     .brand {
@@ -70,32 +62,6 @@
       font-size: 20px;
       font-weight: 600;
       color: var(--dae-dark);
-    }
-
-    .submit-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 12px;
-      color: var(--dae-medium);
-    }
-
-    .submit-btn {
-      border: none;
-      padding: 8px 14px;
-      background: var(--dae-red);
-      color: #fff;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 12px;
-      min-height: 36px;
-      font-weight: 600;
-    }
-
-    .submit-btn:disabled {
-      background: #f3d6d6;
-      color: #a36c6c;
-      cursor: not-allowed;
     }
 
     nav {
@@ -125,13 +91,6 @@
       background: #fff5f5;
     }
 
-    .nav-btn.disabled {
-      color: #c2c8cf;
-      border-color: #e8eaee;
-      cursor: not-allowed;
-      pointer-events: none;
-    }
-
     main {
       padding: 24px;
     }
@@ -146,12 +105,12 @@
     }
 
     .section {
-      margin-bottom: 24px;
+      margin-bottom: 28px;
       background: #fff;
       border-radius: 16px;
       padding: 20px;
       border: 1px solid var(--dae-light);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
     }
 
     .section-header {
@@ -176,7 +135,7 @@
 
     .section h4 {
       margin: 16px 0 6px;
-      font-size: 12px;
+      font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.08em;
       color: var(--dae-medium);
@@ -196,7 +155,7 @@
       font-size: 12px;
       padding: 6px 10px;
       border-radius: 999px;
-      background: #f4f6f9;
+      background: #f1f3f6;
       color: var(--dae-medium);
       border: 1px solid var(--dae-light);
     }
@@ -222,7 +181,7 @@
 
     .stat-card h3 {
       margin: 0 0 8px;
-      font-size: 12px;
+      font-size: 13px;
       color: var(--dae-medium);
       font-weight: 600;
       text-transform: uppercase;
@@ -238,7 +197,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
+      font-size: 13px;
     }
 
     th, td {
@@ -290,16 +249,10 @@
       border: 1px solid var(--dae-red);
     }
 
-    .icon-btn {
+    .button.ghost {
+      background: transparent;
+      color: var(--dae-medium);
       border: 1px solid var(--dae-light);
-      background: #fff;
-      color: var(--dae-dark);
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      cursor: pointer;
-      min-height: 32px;
-      font-weight: 500;
     }
 
     .fields-grid {
@@ -363,9 +316,9 @@
     }
 
     .inline-note {
-      background: #f7f3e8;
-      border: 1px solid #f0e4c7;
-      color: #7d6a3a;
+      background: #fff8e1;
+      border: 1px solid #ffe08a;
+      color: #8a6d3b;
       padding: 10px 12px;
       border-radius: 10px;
       font-size: 12px;
@@ -413,9 +366,9 @@
 
     .condition-row {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 220px;
+      grid-template-columns: 1fr auto;
       gap: 12px;
-      align-items: center;
+      align-items: start;
       padding: 10px 0;
       border-bottom: 1px dashed var(--dae-light);
     }
@@ -424,35 +377,11 @@
       border-bottom: none;
     }
 
-    .condition-label {
-      font-size: 13px;
-      color: var(--dae-dark);
-      font-weight: 500;
-    }
-
     .radio-group {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      font-size: 12px;
-      align-items: center;
-    }
-
-    .radio-group label {
       display: flex;
-      align-items: center;
-      gap: 6px;
-      justify-content: flex-start;
+      gap: 12px;
       font-size: 12px;
-      color: var(--dae-medium);
-    }
-
-    .radio-group select {
-      width: 100%;
-    }
-
-    .radio-group input[type="radio"] {
-      margin: 0;
+      align-items: center;
     }
 
     .remarks {
@@ -506,23 +435,31 @@
       margin-bottom: 20px;
     }
 
-    .record-table {
-      width: 100%;
-      border-collapse: collapse;
+    .record-card {
       border: 1px solid var(--dae-light);
       border-radius: 12px;
-      overflow: hidden;
+      padding: 12px;
+      margin-bottom: 12px;
       background: #fff;
     }
 
-    .record-table th, .record-table td {
-      padding: 10px 8px;
-      border-bottom: 1px solid var(--dae-light);
-      font-size: 12px;
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
-    .record-table tr:last-child td {
-      border-bottom: none;
+    .record-header strong {
+      font-size: 14px;
+      color: var(--dae-dark);
+    }
+
+    .record-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .record-status-select {
@@ -530,7 +467,7 @@
       border-radius: 8px;
       border: 1px solid var(--border);
       font-size: 12px;
-      min-height: 34px;
+      min-height: 36px;
     }
 
     .status-yes { background: #e8f5e9; color: #1b5e20; }
@@ -554,9 +491,28 @@
       border-bottom: none;
     }
 
+    .action-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      border-top: 1px solid var(--dae-light);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 30;
+    }
+
+    .action-bar span {
+      font-size: 12px;
+      color: var(--dae-medium);
+    }
+
     .jump-button {
       position: fixed;
-      bottom: 24px;
+      bottom: 90px;
       right: 20px;
       background: var(--dae-red);
       color: #fff;
@@ -568,16 +524,11 @@
       cursor: pointer;
       z-index: 40;
       box-shadow: 0 8px 20px rgba(183, 28, 28, 0.2);
-      display: none;
-    }
-
-    .jump-button.active {
-      display: inline-flex;
     }
 
     .jump-menu {
       position: fixed;
-      bottom: 80px;
+      bottom: 140px;
       right: 20px;
       background: #fff;
       border: 1px solid var(--dae-light);
@@ -629,13 +580,9 @@
         padding: 16px;
       }
 
-      .condition-row {
-        grid-template-columns: 1fr;
-      }
-
-      .radio-group {
-        grid-template-columns: repeat(3, minmax(60px, 1fr));
-        justify-items: start;
+      .action-bar {
+        flex-direction: column;
+        gap: 8px;
       }
 
       table {
@@ -647,21 +594,15 @@
 </head>
 <body>
   <header>
-    <div class="header-top">
-      <div class="brand">
-        <div class="brand-dot"></div>
-        <h1>DAE Aircraft Inspection</h1>
-      </div>
-      <div class="submit-wrap">
-        <span id="submit-status">Complete all sections to submit.</span>
-        <button class="submit-btn" id="submit-btn" disabled>Submit Report</button>
-      </div>
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <h1>DAE Aircraft Inspection</h1>
     </div>
     <nav>
       <button class="nav-btn active" data-view="dashboard" onclick="switchView('dashboard')">Dashboard</button>
-      <button class="nav-btn disabled" data-view="general" onclick="switchView('general')">General Report</button>
-      <button class="nav-btn disabled" data-view="inspection" onclick="switchView('inspection')">Inspection</button>
-      <button class="nav-btn disabled" data-view="records" onclick="switchView('records')">Records</button>
+      <button class="nav-btn" data-view="general" onclick="switchView('general')">General Report</button>
+      <button class="nav-btn" data-view="inspection" onclick="switchView('inspection')">Inspection</button>
+      <button class="nav-btn" data-view="records" onclick="switchView('records')">Records</button>
     </nav>
   </header>
   <main>
@@ -724,10 +665,10 @@
               <td>Oct 28, 2025</td>
               <td>
                 <div style="display:flex;flex-wrap:wrap;gap:6px;">
-                  <button class="icon-btn" type="button">Export to xRM</button>
-                  <button class="icon-btn" type="button">Export to ATS</button>
-                  <button class="icon-btn" type="button">Create summary spec</button>
-                  <button class="icon-btn" type="button">AIR report</button>
+                  <button class="button secondary" type="button">Export to xRM</button>
+                  <button class="button secondary" type="button">Export to ATS</button>
+                  <button class="button secondary" type="button">Create summary spec</button>
+                  <button class="button secondary" type="button">AIR report</button>
                 </div>
               </td>
             </tr>
@@ -781,8 +722,6 @@
         </div>
         <p>Key configuration details for the inspected aircraft and assets.</p>
         <div id="technical-spec" class="fields-grid"></div>
-        <h3>Avionics & Configuration Overview</h3>
-        <div id="config-spec" class="fields-grid"></div>
       </div>
     </section>
 
@@ -810,18 +749,23 @@
           <h2>Records Checklist</h2>
           <span class="progress-pill" id="progress-records">0 / 0 completed</span>
         </div>
-        <p>Compact records verification view with status and file tracking.</p>
+        <p>Complete records verification with auto-managed status tracking.</p>
         <div id="records-container"></div>
       </div>
     </section>
   </main>
 
-  <button class="jump-button" id="jump-button" type="button" onclick="toggleJumpMenu()">Jump to section</button>
+  <button class="jump-button" type="button" onclick="toggleJumpMenu()">Jump to section</button>
   <div class="jump-menu" id="jump-menu"></div>
+
+  <div class="action-bar">
+    <span>All changes are saved in real time. Green pulse confirms save.</span>
+    <button class="button">Submit Report</button>
+  </div>
 
   <script>
     const formData = {};
-    let currentProject = null;
+    let currentProject = '42825';
 
     const projects = {
       '42825': {
@@ -874,14 +818,7 @@
           mzfw: '63,276 kg',
           seating: '189 seats',
           fuel_capacity: '26,000 L',
-          max_range: '3,550 nm',
-          avionics_suite: 'Boeing Sky Interior, dual FMS, ADS-B Out',
-          lav_count: '3',
-          galley_count: '4',
-          attendant_seats: '4',
-          emergency_exits: '8',
-          cabin_ifes: 'Seatback IFE',
-          connectivity: 'Wi-Fi equipped'
+          max_range: '3,550 nm'
         }
       },
       '42833': {
@@ -934,14 +871,7 @@
           mzfw: '63,276 kg',
           seating: '189 seats',
           fuel_capacity: '26,000 L',
-          max_range: '3,550 nm',
-          avionics_suite: 'Boeing Sky Interior, dual FMS, ADS-B Out',
-          lav_count: '3',
-          galley_count: '4',
-          attendant_seats: '4',
-          emergency_exits: '8',
-          cabin_ifes: 'Seatback IFE',
-          connectivity: 'Wi-Fi equipped'
+          max_range: '3,550 nm'
         }
       },
       '7020': {
@@ -1016,14 +946,7 @@
           mzfw: '62,730 kg',
           seating: '162 seats',
           fuel_capacity: '26,020 L',
-          max_range: '3,060 nm',
-          avionics_suite: 'Honeywell suite, dual FMS, TCAS II',
-          lav_count: '2',
-          galley_count: '3',
-          attendant_seats: '4',
-          emergency_exits: '8',
-          cabin_ifes: 'Overhead monitors',
-          connectivity: 'Wi-Fi available'
+          max_range: '3,060 nm'
         }
       }
     };
@@ -1056,16 +979,6 @@
       { id: 'seating', label: 'Seating Configuration', placeholder: '189 seats' },
       { id: 'fuel_capacity', label: 'Fuel Capacity', placeholder: '26,000 L' },
       { id: 'max_range', label: 'Maximum Range', placeholder: '3,550 nm' }
-    ];
-
-    const configFields = [
-      { id: 'avionics_suite', label: 'Avionics / Connectivity', placeholder: 'Dual FMS, ADS-B Out, Wi-Fi' },
-      { id: 'lav_count', label: 'Lavatories (count)', placeholder: '3' },
-      { id: 'galley_count', label: 'Galleys (count)', placeholder: '4' },
-      { id: 'attendant_seats', label: 'Attendant Seats (count)', placeholder: '4' },
-      { id: 'emergency_exits', label: 'Emergency Exits (count)', placeholder: '8' },
-      { id: 'cabin_ifes', label: 'Cabin IFE', placeholder: 'Seatback IFE' },
-      { id: 'connectivity', label: 'Connectivity', placeholder: 'Wi-Fi equipped' }
     ];
 
     const executiveSummary = {
@@ -1167,7 +1080,6 @@
       { id: 'rh_mid_fuse', title: 'Right Mid Fuselage', items: ['Fuselage Skin', 'Paint', 'Windows', 'Antenna'], required_photos: ['General views', 'Antenna installation'] },
       { id: 'rh_wing', title: 'Right Wing', items: ['Evidence of Leaks', 'Paint', 'Leading Edge', 'Fueling Station', 'Trailing Edge', 'Upper Surface'], required_photos: ['General views', 'Leading edge', 'Trailing edge', 'Fueling station', 'Upper surface'] },
       { id: 'engine2', title: 'Fitted Engine No. 2 - RH', sn_ref: 'engine2_sn', items: ['Inlet', 'De-icer boot condition', 'Engine Mount FWD & AFT', 'Service panels & Latches', 'Exhaust Area', 'Evidence of Leaks', 'Pylon'], required_photos: ['Data Plate', 'General View', 'Inlet View', 'Fan blades', 'Exhaust view'] },
-      { id: 'apu_exterior', title: 'APU Compartment', items: ['APU bay condition', 'APU exhaust area', 'Access panels', 'Evidence of Leaks'], required_photos: ['APU bay', 'Exhaust area', 'Data plate'] },
       { id: 'rh_gear', title: 'Right Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Wheel well general condition', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of brakes', 'Wheel well'] },
       { id: 'rh_aft_fuse', title: 'Right Aft Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Aft section'] },
       { id: 'tail', title: 'Tail Area', items: ['Paint', 'Vertical Fin & Rudder', 'Horizontal Stabilizer & Elevators', 'Evidence of Leaks'], required_photos: ['General views', 'Vertical stabilizer', 'Horizontal stabilizer', 'Rudder'] },
@@ -1187,7 +1099,7 @@
       { id: 'lav_la', title: 'Forward Lavatory [LA]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
       { id: 'lav_ld', title: 'Aft Lavatory [LD]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
       { id: 'lav_le', title: 'Second Aft Lavatory [LE]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
-      { id: 'ee_compartment', title: 'Nose & E&E Compartment', items: ['General Appearance', 'Avionics racks', 'Circuit protection panels'], required_photos: ['General view', 'Avionics racks', 'Compartment condition'] }
+      { id: 'ee_compartment', title: 'Nose & E&E Compartment', items: ['General Appearance'], required_photos: ['General view', 'Avionics racks', 'Compartment condition'] }
     ];
 
     const recordsData = {
@@ -1277,30 +1189,16 @@
     };
 
     function switchView(viewId) {
-      if (!currentProject && viewId !== 'dashboard') {
-        return;
-      }
       document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
       document.getElementById(viewId).classList.add('active');
       document.querySelector(`[data-view="${viewId}"]`).classList.add('active');
       buildJumpMenu(viewId);
-      toggleJumpButton(viewId);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function toggleJumpMenu() {
       document.getElementById('jump-menu').classList.toggle('active');
-    }
-
-    function toggleJumpButton(viewId) {
-      const button = document.getElementById('jump-button');
-      if (['general', 'inspection', 'records'].includes(viewId)) {
-        button.classList.add('active');
-      } else {
-        button.classList.remove('active');
-        document.getElementById('jump-menu').classList.remove('active');
-      }
     }
 
     function buildJumpMenu(viewId) {
@@ -1418,7 +1316,7 @@
         item.className = 'file-item';
         item.innerHTML = `
           <span>${file.name}</span>
-          <button type="button" class="icon-btn" onclick="deleteFile(this, '${recordCardId}')">Remove</button>
+          <button type="button" class="button secondary" onclick="deleteFile(this, '${recordCardId}')">Delete</button>
         `;
         list.appendChild(item);
       });
@@ -1426,7 +1324,6 @@
       const select = recordCard.querySelector('select');
       select.value = 'yes';
       updateRecordStatus(select);
-      updateFileCount(recordCardId);
       updateProgress();
     }
 
@@ -1440,17 +1337,7 @@
         select.value = 'no';
         updateRecordStatus(select);
       }
-      updateFileCount(recordCardId);
       updateProgress();
-    }
-
-    function updateFileCount(recordCardId) {
-      const recordCard = document.getElementById(recordCardId);
-      const list = recordCard.querySelector('.file-list');
-      const countEl = recordCard.querySelector('.file-count');
-      if (countEl) {
-        countEl.textContent = `${list.children.length} file(s)`;
-      }
     }
 
     function updateRecordStatus(select) {
@@ -1469,7 +1356,7 @@
         <td><input type="text" value="" oninput="markSaved(this)" /></td>
         <td><input type="text" value="" oninput="markSaved(this)" /></td>
         <td><input type="email" value="" oninput="markSaved(this)" /></td>
-        <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+        <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
       `;
       tbody.appendChild(row);
     }
@@ -1543,24 +1430,6 @@
         wrapper.appendChild(indicator);
         container.appendChild(wrapper);
       });
-
-      const configContainer = document.getElementById('config-spec');
-      configContainer.innerHTML = '';
-      configFields.forEach(field => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'field';
-        wrapper.innerHTML = `<label for="${field.id}">${field.label}</label>`;
-        const input = document.createElement('input');
-        input.id = field.id;
-        input.placeholder = field.placeholder;
-        input.addEventListener('input', () => markSaved(input));
-        wrapper.appendChild(input);
-        const indicator = document.createElement('span');
-        indicator.className = 'save-indicator';
-        indicator.textContent = '✓';
-        wrapper.appendChild(indicator);
-        configContainer.appendChild(wrapper);
-      });
     }
 
     function renderExecutiveSummary() {
@@ -1609,13 +1478,13 @@
             <td><input type="text" value="Maintenance Director" oninput="markSaved(this)" /></td>
             <td><input type="text" value="+1 202 555 0147" oninput="markSaved(this)" /></td>
             <td><input type="email" value="maria.alvarez@ara.jet" oninput="markSaved(this)" /></td>
-            <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+            <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
           </tr>
         </tbody>
       `;
       const addRowButton = document.createElement('button');
-      addRowButton.className = 'icon-btn';
-      addRowButton.textContent = '+ Add contact';
+      addRowButton.className = 'button';
+      addRowButton.textContent = 'Add Contact';
       addRowButton.type = 'button';
       addRowButton.style.marginTop = '10px';
       addRowButton.addEventListener('click', () => addContactRow('contacts-table'));
@@ -1672,13 +1541,13 @@
           <tr>
             <td><input type="text" value="27" oninput="markSaved(this)" /></td>
             <td><input type="text" value="Winglet Retrofit" oninput="markSaved(this)" /></td>
-            <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+            <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
           </tr>
         </tbody>
       `;
       const addModButton = document.createElement('button');
-      addModButton.className = 'icon-btn';
-      addModButton.textContent = '+ Add mod / STC';
+      addModButton.className = 'button';
+      addModButton.textContent = 'Add Mod / STC';
       addModButton.type = 'button';
       addModButton.style.marginTop = '10px';
       addModButton.addEventListener('click', () => {
@@ -1687,7 +1556,7 @@
         row.innerHTML = `
           <td><input type="text" oninput="markSaved(this)" /></td>
           <td><input type="text" oninput="markSaved(this)" /></td>
-          <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+          <td><button class="button secondary" type="button" onclick="deleteRow(this)">Delete</button></td>
         `;
         tbody.appendChild(row);
       });
@@ -1754,7 +1623,7 @@
           const isLeak = item.toLowerCase().includes('evidence of leaks');
           row.innerHTML = `
             <div>
-              <span class="condition-label">${item}</span>
+              <strong>${item}</strong>
               <div id="${remarksId}" class="remarks">
                 <label>Remarks</label>
                 <textarea placeholder="Required: Explain condition in detail..." oninput="markSaved(this)"></textarea>
@@ -1762,9 +1631,9 @@
             </div>
             <div class="radio-group">
               ${isLeak ? `
-                <select id="${area.id}_leak_${index}" onchange="handleLeakStatus(this, '${remarksId}')">
+                <select onchange="handleLeakStatus(this, '${remarksId}')">
                   <option value="" selected disabled>Select</option>
-                  <option value="none">No evidence</option>
+                  <option value="none">No evidence observed</option>
                   <option value="observed">Evidence observed</option>
                   <option value="not_checked">Not inspected</option>
                 </select>
@@ -1792,8 +1661,7 @@
         photoSection.innerHTML = `
           <label for="${photoInputId}">Photos</label>
           <div class="inline-note"><strong>Required Photos:</strong> ${area.required_photos.join(', ')}</div>
-          <label class="icon-btn" for="${photoInputId}">+ Add photos</label>
-          <input id="${photoInputId}" type="file" accept="image/*" multiple style="display:none;" onchange="handlePhotos(event, '${gridId}')" />
+          <input id="${photoInputId}" type="file" accept="image/*" multiple capture="environment" onchange="handlePhotos(event, '${gridId}')" />
           <div id="${gridId}" class="photo-grid"></div>
         `;
         card.appendChild(photoSection);
@@ -1819,55 +1687,38 @@
         if (section.sn_ref) {
           const sn = document.createElement('p');
           const snValueId = `sn_records_${key}`;
-          sn.innerHTML = `Assigned Serial Number: <span class="sn-tag" id="${snValueId}">${formData[section.sn_ref] || '—'}</span>`;
+          sn.innerHTML = `Assigned Serial Number: <strong id="${snValueId}">${formData[section.sn_ref] || '—'}</strong>`;
           sectionDiv.appendChild(sn);
         }
-        const table = document.createElement('table');
-        table.className = 'record-table';
-        table.innerHTML = `
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Title</th>
-              <th>Serial</th>
-              <th>Status</th>
-              <th>ATS</th>
-              <th>Files</th>
-              <th>Upload</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        `;
-        const tbody = table.querySelector('tbody');
         section.items.forEach((item, index) => {
+          const card = document.createElement('div');
           const recordCardId = `record_${key}_${index}`;
-          const row = document.createElement('tr');
-          const snSpan = item.sn_ref ? `<span id="sn_rec_${item.code}">${formData[item.sn_ref] || '—'}</span>` : '—';
-          row.id = recordCardId;
-          row.innerHTML = `
-            <td>${item.code}</td>
-            <td>${item.title}</td>
-            <td>${snSpan}</td>
-            <td>
-              <select class="record-status-select status-no" onchange="updateRecordStatus(this)">
-                <option value="yes">Yes</option>
-                <option value="no" selected>No</option>
-                <option value="na">N/A</option>
-              </select>
-            </td>
-            <td><label><input type="checkbox" /> ATS</label></td>
-            <td>
-              <span class="file-count">0 file(s)</span>
-              <div class="file-list" id="filelist_${recordCardId}"></div>
-            </td>
-            <td>
-              <label class="icon-btn" for="file_${recordCardId}">+ Add</label>
+          card.className = 'record-card';
+          card.id = recordCardId;
+          const snSpan = item.sn_ref ? `<span class="sn-tag">S/N: <span id="sn_rec_${item.code}">${formData[item.sn_ref] || '—'}</span></span>` : '';
+          card.innerHTML = `
+            <div class="record-header">
+              <div>
+                <strong>${item.code} — ${item.title}</strong>
+                ${snSpan}
+              </div>
+              <div class="record-actions">
+                <select class="record-status-select status-no" onchange="updateRecordStatus(this)">
+                  <option value="yes">Yes</option>
+                  <option value="no" selected>No</option>
+                  <option value="na">N/A</option>
+                </select>
+                <label><input type="checkbox" /> Already on ATS</label>
+              </div>
+            </div>
+            <div class="file-list" id="filelist_${recordCardId}"></div>
+            <div style="margin-top:8px;">
+              <label class="button secondary" for="file_${recordCardId}">+ Add File</label>
               <input id="file_${recordCardId}" type="file" multiple style="display:none;" onchange="handleFileUpload(event, 'filelist_${recordCardId}', '${recordCardId}')" />
-            </td>
+            </div>
           `;
-          tbody.appendChild(row);
+          sectionDiv.appendChild(card);
         });
-        sectionDiv.appendChild(table);
         container.appendChild(sectionDiv);
       });
     }
@@ -1898,14 +1749,6 @@
         formData[field.id] = value;
       });
 
-      configFields.forEach(field => {
-        const input = document.getElementById(field.id);
-        if (!input) return;
-        const value = project.technical[field.id] || '';
-        input.value = value;
-        formData[field.id] = value;
-      });
-
       document.querySelectorAll('#executive-summary textarea').forEach(textarea => {
         textarea.value = '';
         formData[textarea.id] = '';
@@ -1920,22 +1763,16 @@
       });
 
       document.querySelectorAll('input[type="radio"]').forEach(radio => (radio.checked = false));
-      document.querySelectorAll('.remarks').forEach(remarks => remarks.classList.remove('show'));
+      document.querySelectorAll('select').forEach(select => {
+        if (select.classList.contains('record-status-select')) return;
+        if (select.id && select.id !== 'mission_type') return;
+      });
 
       updateProgress();
     }
 
-    function enableReportNavigation() {
-      document.querySelectorAll('.nav-btn').forEach(btn => {
-        if (btn.dataset.view !== 'dashboard') {
-          btn.classList.remove('disabled');
-        }
-      });
-    }
-
     function selectProject(projectId) {
       fillProjectData(projectId);
-      enableReportNavigation();
       switchView('general');
     }
 
@@ -1948,7 +1785,7 @@
       const execCompleted = Array.from(execInputs).filter(input => input.value && input.value.trim() !== '').length;
       updateProgressPill('progress-executive', execCompleted, execInputs.length);
 
-      const technicalInputs = document.querySelectorAll('#technical-spec input, #config-spec input');
+      const technicalInputs = document.querySelectorAll('#technical-spec input');
       const technicalCompleted = Array.from(technicalInputs).filter(input => input.value && input.value.trim() !== '').length;
       updateProgressPill('progress-technical', technicalCompleted, technicalInputs.length);
 
@@ -1964,19 +1801,6 @@
       const recordSelects = document.querySelectorAll('.record-status-select');
       const recordCompleted = Array.from(recordSelects).filter(select => select.value !== 'no').length;
       updateProgressPill('progress-records', recordCompleted, recordSelects.length);
-
-      const totalCompleted = generalCompleted + execCompleted + technicalCompleted + exteriorCompleted + interiorCompleted + recordCompleted;
-      const totalItems = generalInputs.length + execInputs.length + technicalInputs.length + exteriorTotal + interiorTotal + recordSelects.length;
-      const submitBtn = document.getElementById('submit-btn');
-      const submitStatus = document.getElementById('submit-status');
-
-      if (totalItems > 0 && totalCompleted === totalItems) {
-        submitBtn.disabled = false;
-        submitStatus.textContent = 'All sections complete. Ready to submit.';
-      } else {
-        submitBtn.disabled = true;
-        submitStatus.textContent = 'Complete all sections to submit.';
-      }
     }
 
     function updateAreaProgress(area) {
@@ -1984,7 +1808,7 @@
       area.items.forEach((item, index) => {
         const isLeak = item.toLowerCase().includes('evidence of leaks');
         if (isLeak) {
-          const select = document.getElementById(`${area.id}_leak_${index}`);
+          const select = document.querySelector(`#area-${area.id} select`);
           if (select && select.value) completed += 1;
         } else {
           const checked = document.querySelector(`input[name="${area.id}_cond_${index}"]:checked`);
@@ -2016,6 +1840,7 @@
     renderAreas(physicalInterior, 'interior-areas');
     renderRecords();
     document.querySelectorAll('.record-status-select').forEach(select => updateRecordStatus(select));
+    fillProjectData(currentProject);
     buildJumpMenu('dashboard');
   </script>
 </body>
