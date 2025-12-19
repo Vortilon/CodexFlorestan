@@ -1,12 +1,2022 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>AIR</title>
+  <title>DAE Aircraft Inspection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --dae-red: #B71C1C;
+      --dae-dark: #2f2f2f;
+      --dae-medium: #7A8795;
+      --dae-light: #E8EAED;
+      --primary: #2b2b2b;
+      --secondary: #606a75;
+      --accent: #0a5ec2;
+      --success: #28a745;
+      --warning: #ffc107;
+      --danger: #dc3545;
+      --light: #f8f9fa;
+      --border: #e1e5ea;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      color: var(--primary);
+      background: #f6f7f9;
+      padding-bottom: 80px;
+    }
+
+    header {
+      padding: 18px 24px 12px;
+      background: #fff;
+      border-bottom: 1px solid var(--dae-light);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--dae-red);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--dae-dark);
+    }
+
+    .submit-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 12px;
+      color: var(--dae-medium);
+    }
+
+    .submit-btn {
+      border: none;
+      padding: 8px 14px;
+      background: var(--dae-red);
+      color: #fff;
+      border-radius: 999px;
+      cursor: pointer;
+      font-size: 12px;
+      min-height: 36px;
+      font-weight: 600;
+    }
+
+    .submit-btn:disabled {
+      background: #f3d6d6;
+      color: #a36c6c;
+      cursor: not-allowed;
+    }
+
+    nav {
+      margin-top: 14px;
+      display: flex;
+      gap: 12px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .nav-btn {
+      border: 1px solid var(--dae-light);
+      background: #fff;
+      color: var(--dae-medium);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      min-height: 44px;
+      white-space: nowrap;
+    }
+
+    .nav-btn.active {
+      border-color: var(--dae-red);
+      color: var(--dae-red);
+      background: #fff5f5;
+    }
+
+    .nav-btn.disabled {
+      color: #c2c8cf;
+      border-color: #e8eaee;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    main {
+      padding: 24px;
+    }
+
+    .view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    .section {
+      margin-bottom: 24px;
+      background: #fff;
+      border-radius: 16px;
+      padding: 20px;
+      border: 1px solid var(--dae-light);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .section h2 {
+      margin: 0 0 12px;
+      font-size: 22px;
+      color: var(--dae-dark);
+    }
+
+    .section h3 {
+      margin: 20px 0 8px;
+      font-size: 18px;
+      color: var(--dae-dark);
+    }
+
+    .section h4 {
+      margin: 16px 0 6px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--dae-medium);
+    }
+
+    .section p {
+      margin: 0 0 12px;
+      color: var(--secondary);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f4f6f9;
+      color: var(--dae-medium);
+      border: 1px solid var(--dae-light);
+    }
+
+    .progress-pill.complete {
+      background: #edf7f0;
+      color: #1e7e34;
+      border-color: #cdebd4;
+    }
+
+    .grid-4 {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+
+    .stat-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      border: 1px solid var(--dae-light);
+    }
+
+    .stat-card h3 {
+      margin: 0 0 8px;
+      font-size: 12px;
+      color: var(--dae-medium);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .stat-card span {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--dae-dark);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--dae-light);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--dae-medium);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.05em;
+    }
+
+    tbody tr:hover {
+      background: #fafbfc;
+    }
+
+    .badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 600;
+      display: inline-block;
+    }
+
+    .badge.orange { background: #fff3cd; color: #8a6d3b; }
+    .badge.green { background: #e6f4ea; color: #1e7e34; }
+    .badge.blue { background: #e7f1ff; color: #0050b3; }
+
+    .button {
+      border: none;
+      padding: 8px 12px;
+      background: var(--dae-red);
+      color: #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 12px;
+      min-height: 36px;
+      font-weight: 600;
+    }
+
+    .button.secondary {
+      background: #fff;
+      color: var(--dae-red);
+      border: 1px solid var(--dae-red);
+    }
+
+    .icon-btn {
+      border: 1px solid var(--dae-light);
+      background: #fff;
+      color: var(--dae-dark);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+      min-height: 32px;
+      font-weight: 500;
+    }
+
+    .fields-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    }
+
+    .field {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--dae-medium);
+      font-weight: 500;
+    }
+
+    input, select, textarea {
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-family: inherit;
+      min-height: 44px;
+      background: #fff;
+      color: var(--dae-dark);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #a2a8b0;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .saved input, .saved select, .saved textarea {
+      border-color: var(--success);
+      background: #f6fef9;
+      animation: savedPulse 0.5s ease;
+    }
+
+    .save-indicator {
+      position: absolute;
+      right: 12px;
+      top: 36px;
+      color: var(--success);
+      font-weight: 700;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .saved .save-indicator {
+      opacity: 1;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .inline-note {
+      background: #f7f3e8;
+      border: 1px solid #f0e4c7;
+      color: #7d6a3a;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .area-card {
+      border: 1px solid var(--dae-light);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 16px;
+      background: #fff;
+    }
+
+    .area-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .area-header h4 {
+      margin: 0;
+      font-size: 16px;
+      color: var(--dae-dark);
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .sn-tag {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #f4f5f7;
+      font-size: 12px;
+      color: var(--dae-medium);
+      border: 1px solid var(--dae-light);
+    }
+
+    .area-progress {
+      font-size: 12px;
+      color: var(--dae-medium);
+    }
+
+    .condition-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 220px;
+      gap: 12px;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px dashed var(--dae-light);
+    }
+
+    .condition-row:last-child {
+      border-bottom: none;
+    }
+
+    .condition-label {
+      font-size: 13px;
+      color: var(--dae-dark);
+      font-weight: 500;
+    }
+
+    .radio-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      font-size: 12px;
+      align-items: center;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: flex-start;
+      font-size: 12px;
+      color: var(--dae-medium);
+    }
+
+    .radio-group select {
+      width: 100%;
+    }
+
+    .radio-group input[type="radio"] {
+      margin: 0;
+    }
+
+    .remarks {
+      margin-top: 8px;
+      display: none;
+      animation: slideDown 0.3s ease;
+    }
+
+    .remarks.show {
+      display: block;
+    }
+
+    .photo-grid {
+      display: grid;
+      gap: 8px;
+      grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+      margin-top: 12px;
+    }
+
+    .photo-card {
+      border: 1px solid var(--dae-light);
+      border-radius: 8px;
+      padding: 6px;
+      text-align: center;
+      background: #fff;
+    }
+
+    .photo-card img {
+      width: 100%;
+      border-radius: 6px;
+      height: 70px;
+      object-fit: cover;
+    }
+
+    .photo-actions {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 4px;
+    }
+
+    .photo-actions button {
+      border: none;
+      background: none;
+      color: var(--accent);
+      font-size: 12px;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .record-section {
+      margin-bottom: 20px;
+    }
+
+    .record-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--dae-light);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .record-table th, .record-table td {
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--dae-light);
+      font-size: 12px;
+    }
+
+    .record-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .record-status-select {
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      font-size: 12px;
+      min-height: 34px;
+    }
+
+    .status-yes { background: #e8f5e9; color: #1b5e20; }
+    .status-no { background: #fff3cd; color: #8a6d3b; }
+    .status-na { background: #e3f2fd; color: #0d47a1; }
+
+    .file-list {
+      margin-top: 8px;
+      font-size: 12px;
+    }
+
+    .file-item {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px dashed var(--dae-light);
+      padding: 4px 0;
+      gap: 8px;
+    }
+
+    .file-item:last-child {
+      border-bottom: none;
+    }
+
+    .jump-button {
+      position: fixed;
+      bottom: 24px;
+      right: 20px;
+      background: var(--dae-red);
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 12px 16px;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+      z-index: 40;
+      box-shadow: 0 8px 20px rgba(183, 28, 28, 0.2);
+      display: none;
+    }
+
+    .jump-button.active {
+      display: inline-flex;
+    }
+
+    .jump-menu {
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid var(--dae-light);
+      border-radius: 12px;
+      padding: 12px;
+      min-width: 220px;
+      max-height: 60vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      display: none;
+      z-index: 40;
+    }
+
+    .jump-menu.active {
+      display: block;
+    }
+
+    .jump-menu a {
+      display: block;
+      padding: 8px 10px;
+      font-size: 12px;
+      color: var(--dae-dark);
+      text-decoration: none;
+      border-radius: 8px;
+    }
+
+    .jump-menu a:hover {
+      background: #f7f8fa;
+    }
+
+    @keyframes savedPulse {
+      0% { box-shadow: 0 0 0 rgba(40, 167, 69, 0.4); }
+      70% { box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+      100% { box-shadow: 0 0 0 rgba(40, 167, 69, 0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 16px;
+      }
+
+      .condition-row {
+        grid-template-columns: 1fr;
+      }
+
+      .radio-group {
+        grid-template-columns: repeat(3, minmax(60px, 1fr));
+        justify-items: start;
+      }
+
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>AIR</h1>
-  <p>Deployment OK.</p>
+  <header>
+    <div class="header-top">
+      <div class="brand">
+        <div class="brand-dot"></div>
+        <h1>DAE Aircraft Inspection</h1>
+      </div>
+      <div class="submit-wrap">
+        <span id="submit-status">Complete all sections to submit.</span>
+        <button class="submit-btn" id="submit-btn" disabled>Submit Report</button>
+      </div>
+    </div>
+    <nav>
+      <button class="nav-btn active" data-view="dashboard" onclick="switchView('dashboard')">Dashboard</button>
+      <button class="nav-btn disabled" data-view="general" onclick="switchView('general')">General Report</button>
+      <button class="nav-btn disabled" data-view="inspection" onclick="switchView('inspection')">Inspection</button>
+      <button class="nav-btn disabled" data-view="records" onclick="switchView('records')">Records</button>
+    </nav>
+  </header>
+  <main>
+    <section id="dashboard" class="view active">
+      <div class="section">
+        <h2>Dashboard</h2>
+        <p>Executive view of active aircraft inspections, including status and quick actions.</p>
+        <div class="grid-4">
+          <div class="stat-card">
+            <h3>Active Inspections</h3>
+            <span>5</span>
+          </div>
+          <div class="stat-card">
+            <h3>Completed This Month</h3>
+            <span>3</span>
+          </div>
+          <div class="stat-card">
+            <h3>Avg Completion Time</h3>
+            <span>8.2 days</span>
+          </div>
+          <div class="stat-card">
+            <h3>Pending Review</h3>
+            <span>2</span>
+          </div>
+        </div>
+      </div>
+      <div class="section">
+        <h2>Projects</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Aircraft</th>
+              <th>Model</th>
+              <th>Operator</th>
+              <th>FM User</th>
+              <th>Inspector</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr data-project="42825" onclick="selectProject('42825')">
+              <td>MSN 42825</td>
+              <td>B737-8</td>
+              <td>Arajet</td>
+              <td>Giancarlo Malessani</td>
+              <td>Peter Haefeli</td>
+              <td><span class="badge orange">In Progress</span></td>
+              <td>Nov 03, 2025</td>
+              <td><button class="button secondary" type="button" onclick="selectProject('42825')">View</button></td>
+            </tr>
+            <tr data-project="42833" onclick="selectProject('42833')">
+              <td>MSN 42833</td>
+              <td>B737-8</td>
+              <td>Arajet</td>
+              <td>Giancarlo Malessani</td>
+              <td>Jack Smit</td>
+              <td><span class="badge green">Approved</span></td>
+              <td>Oct 28, 2025</td>
+              <td>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <button class="icon-btn" type="button">Export to xRM</button>
+                  <button class="icon-btn" type="button">Export to ATS</button>
+                  <button class="icon-btn" type="button">Create summary spec</button>
+                  <button class="icon-btn" type="button">AIR report</button>
+                </div>
+              </td>
+            </tr>
+            <tr data-project="7020" onclick="selectProject('7020')">
+              <td>MSN 7020</td>
+              <td>A320</td>
+              <td>Viva</td>
+              <td>Giancarlo Malessani</td>
+              <td>Rick McIlven</td>
+              <td><span class="badge blue">Assigned</span></td>
+              <td>Nov 10, 2025</td>
+              <td><button class="button secondary" type="button" onclick="selectProject('7020')">View</button></td>
+            </tr>
+            <tr data-project="39426" onclick="selectProject('39426')">
+              <td>MSN 39426</td>
+              <td>B737-800</td>
+              <td>Aerolineas Argentinas</td>
+              <td>Claus Schmetkamp</td>
+              <td>Peter Haefeli</td>
+              <td><span class="badge orange">In Progress</span></td>
+              <td>Nov 06, 2025</td>
+              <td><button class="button secondary" type="button" onclick="selectProject('39426')">View</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="general" class="view">
+      <div class="section" id="section-general-data">
+        <div class="section-header">
+          <h2>General Aircraft Data</h2>
+          <span class="progress-pill" id="progress-general">0 / 16 completed</span>
+        </div>
+        <p>Core information that auto-populates throughout the report.</p>
+        <div id="general-data" class="fields-grid"></div>
+      </div>
+
+      <div class="section" id="section-executive">
+        <div class="section-header">
+          <h2>Section 1 - Executive Summary</h2>
+          <span class="progress-pill" id="progress-executive">0 / 0 completed</span>
+        </div>
+        <div id="executive-summary"></div>
+      </div>
+
+      <div class="section" id="section-technical">
+        <div class="section-header">
+          <h2>Section 2 - Technical Specification</h2>
+          <span class="progress-pill" id="progress-technical">0 / 0 completed</span>
+        </div>
+        <p>Key configuration details for the inspected aircraft and assets.</p>
+        <div id="technical-spec" class="fields-grid"></div>
+        <h3>Avionics & Configuration Overview</h3>
+        <div id="config-spec" class="fields-grid"></div>
+      </div>
+    </section>
+
+    <section id="inspection" class="view">
+      <div class="section" id="section-exterior">
+        <div class="section-header">
+          <h2>Section 3 - Physical Inspection - Exterior</h2>
+          <span class="progress-pill" id="progress-exterior">0 / 0 completed</span>
+        </div>
+        <div id="exterior-areas"></div>
+      </div>
+
+      <div class="section" id="section-interior">
+        <div class="section-header">
+          <h2>Section 4 - Physical Inspection - Interior</h2>
+          <span class="progress-pill" id="progress-interior">0 / 0 completed</span>
+        </div>
+        <div id="interior-areas"></div>
+      </div>
+    </section>
+
+    <section id="records" class="view">
+      <div class="section">
+        <div class="section-header">
+          <h2>Records Checklist</h2>
+          <span class="progress-pill" id="progress-records">0 / 0 completed</span>
+        </div>
+        <p>Compact records verification view with status and file tracking.</p>
+        <div id="records-container"></div>
+      </div>
+    </section>
+  </main>
+
+  <button class="jump-button" id="jump-button" type="button" onclick="toggleJumpMenu()">Jump to section</button>
+  <div class="jump-menu" id="jump-menu"></div>
+
+  <script>
+    const formData = {};
+    let currentProject = null;
+
+    const projects = {
+      '42825': {
+        general: {
+          mission_type: 'Audit',
+          aircraft_type: 'Boeing 737-8',
+          msn: '42825',
+          registration: 'HI1103',
+          operator: 'Arajet',
+          dom: '2023-08-15',
+          engine1_sn: '602161',
+          engine2_sn: '602391',
+          apu_sn: 'P-11825',
+          apu_model: 'GTCP85-98DHF',
+          nose_lg_sn: 'GK00011Y6396',
+          left_lg_sn: 'GK00011Y6397',
+          right_lg_sn: 'GK00011Y6398',
+          inspector_name: 'Peter Haefeli',
+          inspection_date: '2025-11-03',
+          report_date: '2025-11-12'
+        },
+        exec: {
+          visit_purpose: 'Inspection performed in Santo Domingo from 02-03 Nov 2025 to validate aircraft condition prior to ongoing lease oversight. Purpose focused on airframe integrity, records review, and configuration compliance for Arajet operations.',
+          operator_cooperation: 'Operator staff were responsive and coordinated access to records, flight deck, and maintenance facilities. Retrieval of historical records was generally prompt with minor delays for legacy archives.',
+          facilities_description: 'Maintenance facilities were clean, access controlled, and supported by humidity control and fire protection systems. Tooling and ground equipment were in satisfactory condition.',
+          issues_concerns: 'Primary recommendation is to consolidate scanned records and ensure immediate access to dent & buckle updates. Minor findings captured in airframe and interior sections.',
+          quick_overview: 'Overall conclusion: aircraft is in serviceable condition with routine cosmetic findings. Records are largely complete; outstanding items relate to scanning completion and consistency of component release tag archiving. No safety critical issues identified.',
+          records_q1: 'Records are stored in secured rooms with controlled humidity and fire protection. Digital retrieval is available for recent files; legacy files remain in mixed storage.',
+          records_q2: 'A digitization process is in place and partially outsourced. Vendor details provided in records appendix with SLA for retrieval within 48 hours.',
+          records_q3: 'This inspection included collection of updated records and top-up scanning for missing historical packets.',
+          records_q4: 'AD/SB tracking is maintained in CAMP with monthly reconciliation. Modifications are logged with FAA/EASA approval references; dent & buckle updates are maintained onboard and in the records archive. Engine/LG/APU SV records are maintained with vendor agreements and B2B trace packs. Release tags for HT/OCCM are available with minor gaps. Preservation records were available for stored components.',
+          records_q5: 'Recommendations: complete digitization backlog and standardize release tag indexing.',
+          airframe_q1: 'Airframe condition is good with minor cosmetic paint wear consistent with utilization.',
+          airframe_q2: 'Avionics modifications align with the operator configuration list; no undocumented mods observed.',
+          airframe_q3: 'Minor cabin interior wear observed on seat covers and galley surfaces; no significant structural damage noted.',
+          airframe_q4: 'Aircraft was active during visit; no storage-related removals noted.',
+          airframe_q5: 'No serious damage noted. Photos captured for minor cosmetic findings.',
+          airframe_q6: 'Continue monitoring cabin trim wear and plan for seat cover refresh at next heavy check.',
+          engine1_findings: 'Engine located on-wing. Performance trend stable; no anomalies noted in monitoring data.',
+          engine2_findings: 'Engine located on-wing. Recent boroscope inspections show acceptable condition.',
+          apu_findings: 'APU on-wing, logbook and recent shop visit records available.',
+          lg_findings: 'Landing gear and wheel wells show typical service wear; no active leaks observed.',
+          incidents_text: 'No incidents or accidents reported. NIS statements collected during visit.'
+        },
+        technical: {
+          aircraft_model: 'B737-8',
+          engine_model: 'CFM LEAP-1B',
+          mtow: '82,190 kg',
+          mlw: '69,050 kg',
+          mzfw: '63,276 kg',
+          seating: '189 seats',
+          fuel_capacity: '26,000 L',
+          max_range: '3,550 nm',
+          avionics_suite: 'Boeing Sky Interior, dual FMS, ADS-B Out',
+          lav_count: '3',
+          galley_count: '4',
+          attendant_seats: '4',
+          emergency_exits: '8',
+          cabin_ifes: 'Seatback IFE',
+          connectivity: 'Wi-Fi equipped'
+        }
+      },
+      '42833': {
+        general: {
+          mission_type: 'Audit',
+          aircraft_type: 'Boeing 737-8',
+          msn: '42833',
+          registration: 'HI1109',
+          operator: 'Arajet',
+          dom: '2023-09-03',
+          engine1_sn: '602211',
+          engine2_sn: '602404',
+          apu_sn: 'P-11872',
+          apu_model: 'GTCP85-98DHF',
+          nose_lg_sn: 'GK00011Y6412',
+          left_lg_sn: 'GK00011Y6413',
+          right_lg_sn: 'GK00011Y6414',
+          inspector_name: 'Jack Smit',
+          inspection_date: '2025-10-21',
+          report_date: '2025-10-28'
+        },
+        exec: {
+          visit_purpose: 'Follow-up audit visit for completed inspection package, confirming closure of prior findings and verifying document readiness for handover.',
+          operator_cooperation: 'Operator provided full access to records and maintenance teams; queries were handled with same-day follow-up.',
+          facilities_description: 'Facilities are modern, well-organized, and meet satisfactory standards for storage and access control.',
+          issues_concerns: 'No major issues. Recommended continued monitoring of cosmetic cabin items and minor documentation formatting.',
+          quick_overview: 'Inspection complete with all critical records available. Cosmetic items logged for routine maintenance. Report approved for export and summary generation.',
+          records_q1: 'Records are well organized and accessible with controlled storage conditions.',
+          records_q2: 'Digitization is internally managed with weekly synchronization to the central repository.',
+          records_q3: 'Updated records were verified; no historical scanning required during this visit.',
+          records_q4: 'AD/SB compliance and modification tracking are well documented; dent & buckle chart current. Component release tags are complete.',
+          records_q5: 'No outstanding concerns.',
+          airframe_q1: 'Airframe in good condition, consistent with low utilization.',
+          airframe_q2: 'Installed avionics conform to approved configuration list.',
+          airframe_q3: 'No significant structural findings; minor cabin wear noted.',
+          airframe_q4: 'Aircraft was active; no storage findings.',
+          airframe_q5: 'No serious damage noted.',
+          airframe_q6: 'Continue standard preventive maintenance.',
+          engine1_findings: 'Engine on-wing, stable performance.',
+          engine2_findings: 'Engine on-wing, stable performance.',
+          apu_findings: 'APU serviceable and records current.',
+          lg_findings: 'Landing gear condition satisfactory with no leaks observed.',
+          incidents_text: 'No incidents or accidents noted.'
+        },
+        technical: {
+          aircraft_model: 'B737-8',
+          engine_model: 'CFM LEAP-1B',
+          mtow: '82,190 kg',
+          mlw: '69,050 kg',
+          mzfw: '63,276 kg',
+          seating: '189 seats',
+          fuel_capacity: '26,000 L',
+          max_range: '3,550 nm',
+          avionics_suite: 'Boeing Sky Interior, dual FMS, ADS-B Out',
+          lav_count: '3',
+          galley_count: '4',
+          attendant_seats: '4',
+          emergency_exits: '8',
+          cabin_ifes: 'Seatback IFE',
+          connectivity: 'Wi-Fi equipped'
+        }
+      },
+      '7020': {
+        general: {
+          mission_type: '',
+          aircraft_type: '',
+          msn: '7020',
+          registration: '',
+          operator: 'Viva',
+          dom: '',
+          engine1_sn: '',
+          engine2_sn: '',
+          apu_sn: '',
+          apu_model: '',
+          nose_lg_sn: '',
+          left_lg_sn: '',
+          right_lg_sn: '',
+          inspector_name: 'Rick McIlven',
+          inspection_date: '',
+          report_date: ''
+        },
+        exec: {},
+        technical: {}
+      },
+      '39426': {
+        general: {
+          mission_type: 'Return',
+          aircraft_type: 'Boeing 737-800',
+          msn: '39426',
+          registration: 'LV-GVF',
+          operator: 'Aerolineas Argentinas',
+          dom: '2011-07-19',
+          engine1_sn: '891234',
+          engine2_sn: '891245',
+          apu_sn: 'APS2309',
+          apu_model: 'APS3200',
+          nose_lg_sn: 'NLG-22190',
+          left_lg_sn: 'MLG-22191',
+          right_lg_sn: 'MLG-22192',
+          inspector_name: 'Peter Haefeli',
+          inspection_date: '2025-11-05',
+          report_date: '2025-11-15'
+        },
+        exec: {
+          visit_purpose: 'Return inspection to validate asset condition and document status against lease return checklist.',
+          operator_cooperation: 'Operator provided access to records and maintenance teams; response time within same day.',
+          facilities_description: 'Facilities meet satisfactory standards with controlled storage and secure access.',
+          issues_concerns: 'Focus on timely document reconciliation prior to return handover.',
+          quick_overview: 'Aircraft condition is acceptable with standard wear; records review ongoing with minor clarifications required.',
+          records_q1: 'Records are accessible with secured storage.',
+          records_q2: 'Digitization is ongoing; partial external support utilized.',
+          records_q3: 'Records collection in progress with top-up scanning planned.',
+          records_q4: 'AD/SB tracking is maintained with supporting documentation available upon request.',
+          records_q5: 'Complete digitization backlog before delivery.',
+          airframe_q1: 'Airframe condition consistent with age and utilization.',
+          airframe_q2: 'Avionics fit appears consistent with documentation.',
+          airframe_q3: 'Cabin shows moderate cosmetic wear with localized trim issues.',
+          airframe_q4: 'No storage issues reported.',
+          airframe_q5: 'Photos captured for cosmetic findings.',
+          airframe_q6: 'Plan interior refresh during return maintenance.',
+          engine1_findings: 'On-wing, stable trends; performance review pending.',
+          engine2_findings: 'On-wing, stable trends; performance review pending.',
+          apu_findings: 'APU serviceable; shop visit history documented.',
+          lg_findings: 'Gear condition satisfactory with routine wear.',
+          incidents_text: 'No incidents reported.'
+        },
+        technical: {
+          aircraft_model: 'B737-800',
+          engine_model: 'CFM56-7B',
+          mtow: '79,015 kg',
+          mlw: '66,360 kg',
+          mzfw: '62,730 kg',
+          seating: '162 seats',
+          fuel_capacity: '26,020 L',
+          max_range: '3,060 nm',
+          avionics_suite: 'Honeywell suite, dual FMS, TCAS II',
+          lav_count: '2',
+          galley_count: '3',
+          attendant_seats: '4',
+          emergency_exits: '8',
+          cabin_ifes: 'Overhead monitors',
+          connectivity: 'Wi-Fi available'
+        }
+      }
+    };
+
+    const generalDataFields = [
+      { id: 'mission_type', label: 'Mission Type', type: 'select', options: ['Audit', 'Return', 'Delivery'] },
+      { id: 'aircraft_type', label: 'Aircraft Type', type: 'text', placeholder: 'Boeing 737-8' },
+      { id: 'msn', label: 'MSN (Manufacturer Serial Number)', type: 'text', placeholder: '42825' },
+      { id: 'registration', label: 'Current Registration', type: 'text', placeholder: 'HI1103' },
+      { id: 'operator', label: 'Current Operator', type: 'text', placeholder: 'Arajet' },
+      { id: 'dom', label: 'Date of Manufacture', type: 'date' },
+      { id: 'engine1_sn', label: 'Engine #1 Serial Number (LH)', type: 'text', placeholder: '602161', populates: ['sn_value_engine1', 'sn_records_ESN1'] },
+      { id: 'engine2_sn', label: 'Engine #2 Serial Number (RH)', type: 'text', placeholder: '602391', populates: ['sn_value_engine2', 'sn_records_ESN2'] },
+      { id: 'apu_sn', label: 'APU Serial Number', type: 'text', placeholder: 'P-11825', populates: ['sn_records_APU'] },
+      { id: 'apu_model', label: 'APU Model', type: 'text', placeholder: 'GTCP85-98DHF' },
+      { id: 'nose_lg_sn', label: 'Nose Landing Gear S/N', type: 'text', placeholder: 'GK00011Y6396', populates: ['sn_rec_K002_NOSE', 'sn_rec_K101_NOSE'] },
+      { id: 'left_lg_sn', label: 'Left Main Landing Gear S/N', type: 'text', placeholder: 'GK00011Y6397', populates: ['sn_rec_K002_LM', 'sn_rec_K101_LM'] },
+      { id: 'right_lg_sn', label: 'Right Main Landing Gear S/N', type: 'text', placeholder: 'GK00011Y6398', populates: ['sn_rec_K002_RM', 'sn_rec_K101_RM'] },
+      { id: 'inspector_name', label: 'Inspector Name', type: 'text', placeholder: 'Jack Smit' },
+      { id: 'inspection_date', label: 'Physical Inspection Date', type: 'date' },
+      { id: 'report_date', label: 'Report Date', type: 'date' }
+    ];
+
+    const technicalSpecFields = [
+      { id: 'aircraft_model', label: 'Aircraft Model', placeholder: 'B737-8' },
+      { id: 'engine_model', label: 'Engine Model', placeholder: 'CFM LEAP-1B' },
+      { id: 'mtow', label: 'Maximum Takeoff Weight (MTOW)', placeholder: '82,190 kg' },
+      { id: 'mlw', label: 'Maximum Landing Weight (MLW)', placeholder: '69,050 kg' },
+      { id: 'mzfw', label: 'Maximum Zero Fuel Weight (MZFW)', placeholder: '63,276 kg' },
+      { id: 'seating', label: 'Seating Configuration', placeholder: '189 seats' },
+      { id: 'fuel_capacity', label: 'Fuel Capacity', placeholder: '26,000 L' },
+      { id: 'max_range', label: 'Maximum Range', placeholder: '3,550 nm' }
+    ];
+
+    const configFields = [
+      { id: 'avionics_suite', label: 'Avionics / Connectivity', placeholder: 'Dual FMS, ADS-B Out, Wi-Fi' },
+      { id: 'lav_count', label: 'Lavatories (count)', placeholder: '3' },
+      { id: 'galley_count', label: 'Galleys (count)', placeholder: '4' },
+      { id: 'attendant_seats', label: 'Attendant Seats (count)', placeholder: '4' },
+      { id: 'emergency_exits', label: 'Emergency Exits (count)', placeholder: '8' },
+      { id: 'cabin_ifes', label: 'Cabin IFE', placeholder: 'Seatback IFE' },
+      { id: 'connectivity', label: 'Connectivity', placeholder: 'Wi-Fi equipped' }
+    ];
+
+    const executiveSummary = {
+      general_visit: {
+        title: 'General - Summary of Visit',
+        questions: [
+          { id: 'visit_purpose', label: 'a) Brief purpose of the visit, location(s) and date(s) of the visit', type: 'textarea' },
+          { id: 'operator_cooperation', label: 'b) Operator cooperation and general responsiveness', type: 'textarea' },
+          { id: 'facilities_description', label: "c) A brief description of the Operator's maintenance facilities at inspection locations (satisfactory/unsatisfactory)", type: 'textarea' },
+          { id: 'issues_concerns', label: 'd) Issues/Concerns/Recommendations/Feedback on the Inspection', type: 'textarea' },
+          { id: 'quick_overview', label: 'e) Quick overview of findings and factual conclusions', type: 'textarea' }
+        ]
+      },
+      operator_contacts: {
+        title: 'Operator Key Contact Personal',
+        type: 'dynamic_table',
+        columns: ['Contact', 'Title', 'Phone Number', 'Email']
+      },
+      inspection_findings: {
+        title: 'Inspection Findings',
+        subsections: {
+          records: {
+            title: 'a) RECORDS',
+            questions: [
+              { id: 'records_q1', label: '1. A brief description of the records keeping of the airline, suitability of their storage facility (humidity controlled/fire protection system/secure/etc.), accessibility of records and speed of retrieval.', type: 'textarea' },
+              { id: 'records_q2', label: '2. Does the airline have a process to digitize records? If yes, is this internally controlled or outsourced to a third party? If outsourced, please provide details of the Third-Party Vendor.', type: 'textarea' },
+              { id: 'records_q3', label: '3. Please mention if this Inspection included collection of latest updated records or involved scanning (complete historical/top up scanning) of records.', type: 'textarea' },
+              { id: 'records_q4', label: '4. Please provide detailed comments on how the airline accomplishes the following:\n   a. Tracking and implementation of ADs and Mandatory SBs\n   b. Identifying Major and Minor Modifications, approval process and availability of FAA/EASA approvals for major modifications\n   c. Tracking of aircraft structural damages and updating Dent & Buckle chart, availability of updated chart onboard and availability of repair paperwork for existing repairs.\n   d. Maintaining Engine, Landing Gear and APU SV records, existence of an airline-vendor agreements for shop maintenance, availability of LLP B2B trace records etc.\n   e. Availability of FAA/EASA release tags for components (HT and OCCM).\n   f. If the aircraft or any of the assets were in storage during the visit, please provide updates on the availability of the preservation records.', type: 'textarea', rows: 8 },
+              { id: 'records_q5', label: '5. Issues/Concerns/Recommendations:', type: 'textarea' }
+            ]
+          },
+          airframe: {
+            title: 'b) AIRFRAME',
+            subtitle: 'Please include a summary of the physical inspection:',
+            questions: [
+              { id: 'airframe_q1', label: '1. General condition and status of the aircraft.', type: 'textarea' },
+              { id: 'airframe_q2', label: '2. Status of Avionics Modifications found physically installed on the aircraft', type: 'textarea' },
+              { id: 'airframe_q3', label: '3. Please specify any findings – elaborate categorically on External Structural Damages, repeat inspection/time limited repairs and significant cabin interior findings (eg seat cushions/covers badly worn, corrosion issues surrounding galleys/lavatories, etc.)', type: 'textarea' },
+              { id: 'airframe_q4', label: '4. If the aircraft was in storage during the visit, please specify if any components have been removed or cannibalized. Also specify the storage conditions and any findings related to improper storage/incorrect preservation etc.', type: 'textarea' },
+              { id: 'airframe_q5', label: '5. If serious damage/findings exist, please include your detailed findings and photos below.', type: 'textarea' },
+              { id: 'airframe_q6', label: '6. Issues/Concerns/Recommendations:', type: 'textarea' }
+            ]
+          },
+          engines: {
+            title: 'c) ENGINES',
+            subtitle: 'Summary of the Engines including their current location(s).',
+            items: [
+              { id: 'engine1_findings', label: '1. Assigned Engine Serial Number', sn_ref: 'engine1_sn', type: 'textarea', placeholder: 'Issues/Concerns/Recommendations:' },
+              { id: 'engine2_findings', label: '2. Assigned Engine Serial Number', sn_ref: 'engine2_sn', type: 'textarea', placeholder: 'Issues/Concerns/Recommendations:' }
+            ]
+          },
+          apu: {
+            title: 'd) APU',
+            subtitle: 'Summary of the APU including their current location(s).',
+            items: [
+              { id: 'apu_findings', label: 'Assigned APU Serial Number', sn_ref: 'apu_sn', type: 'textarea', placeholder: 'Issues/Concerns/Recommendations:' }
+            ]
+          },
+          landing_gears: {
+            title: 'e) LANDING GEARS AND WHEEL WELLS',
+            items: [
+              { id: 'lg_findings', label: 'Issues/Concerns/Recommendations:', type: 'textarea' }
+            ]
+          },
+          incidents: {
+            title: 'f) INCIDENTS/ACCIDENTS',
+            items: [
+              { id: 'incidents_text', label: 'Provide a brief comment clarifying if/when the aircraft has been involved in any incidents or accidents. Please specify if NIS statements were collected from the Operator during this visit.', type: 'textarea' }
+            ]
+          }
+        }
+      },
+      mods_stcs: {
+        title: 'Incorporated Mods & STCs at Current Operator',
+        type: 'dynamic_table',
+        columns: ['ATA', 'Title'],
+        note: 'NOTE: Please include the following when providing Supporting Documentation for Supplemental Type Certificates & SB/Engineering: STC, SB, Form 337 or Regulatory Authority Equivalent, EO Package at installation for each Mod. Please include any local approvals.'
+      },
+      differences: {
+        title: 'Differences',
+        items: [
+          { id: 'differences_text', label: 'Identify any difference between the aircraft and provided Specification Summary.', type: 'textarea' }
+        ]
+      },
+      followup: {
+        title: 'Follow Up Items',
+        items: [
+          { id: 'followup_text', label: 'If applicable, list any items that remain open post completion of the visit/inspection report, that require follow up actions.', type: 'textarea' }
+        ]
+      }
+    };
+
+    const physicalExterior = [
+      { id: 'lh_fwd_fuse', title: 'Left Forward Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Door surrounds', 'Window condition'] },
+      { id: 'nose_gear', title: 'Nose Gear & Wheel Well', items: ['Nose Landing Gear', 'Tires condition', 'General Appearance', 'Wheel Well Appearance', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of tires', 'Wheel well'] },
+      { id: 'nose_radome', title: 'Nose/Radome', items: ['Paint', 'Surface Condition'], required_photos: ['General view', 'Radome surface'] },
+      { id: 'rh_fwd_fuse', title: 'Right Forward Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Door surrounds', 'Window condition'] },
+      { id: 'fwd_cargo', title: 'Forward Cargo Hold', items: ['Door', 'Floor', 'Ceiling', 'Forward/Aft Bulkheads/Sidewalls', 'Baggage Handling Equipment', 'Smoke Detectors'], required_photos: ['General views', 'Floor condition', 'Ceiling condition', 'Cargo door'] },
+      { id: 'rh_mid_fuse', title: 'Right Mid Fuselage', items: ['Fuselage Skin', 'Paint', 'Windows', 'Antenna'], required_photos: ['General views', 'Antenna installation'] },
+      { id: 'rh_wing', title: 'Right Wing', items: ['Evidence of Leaks', 'Paint', 'Leading Edge', 'Fueling Station', 'Trailing Edge', 'Upper Surface'], required_photos: ['General views', 'Leading edge', 'Trailing edge', 'Fueling station', 'Upper surface'] },
+      { id: 'engine2', title: 'Fitted Engine No. 2 - RH', sn_ref: 'engine2_sn', items: ['Inlet', 'De-icer boot condition', 'Engine Mount FWD & AFT', 'Service panels & Latches', 'Exhaust Area', 'Evidence of Leaks', 'Pylon'], required_photos: ['Data Plate', 'General View', 'Inlet View', 'Fan blades', 'Exhaust view'] },
+      { id: 'apu_exterior', title: 'APU Compartment', items: ['APU bay condition', 'APU exhaust area', 'Access panels', 'Evidence of Leaks'], required_photos: ['APU bay', 'Exhaust area', 'Data plate'] },
+      { id: 'rh_gear', title: 'Right Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Wheel well general condition', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of brakes', 'Wheel well'] },
+      { id: 'rh_aft_fuse', title: 'Right Aft Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Aft section'] },
+      { id: 'tail', title: 'Tail Area', items: ['Paint', 'Vertical Fin & Rudder', 'Horizontal Stabilizer & Elevators', 'Evidence of Leaks'], required_photos: ['General views', 'Vertical stabilizer', 'Horizontal stabilizer', 'Rudder'] },
+      { id: 'lh_aft_fuse', title: 'Left Aft Fuselage', items: ['Fuselage Skin', 'Paint', 'Doors and Surrounds', 'Windows'], required_photos: ['General views', 'Aft section'] },
+      { id: 'lh_mid_fuse', title: 'Left Mid Fuselage', items: ['Fuselage Skin', 'Paint', 'Windows'], required_photos: ['General views'] },
+      { id: 'lh_wing', title: 'Left Wing', items: ['Evidence of Leaks', 'Paint', 'Leading Edge', 'Fueling Station', 'Trailing Edge', 'Upper Surface'], required_photos: ['General views', 'Leading edge', 'Trailing edge', 'Fueling station', 'Upper surface'] },
+      { id: 'lh_gear', title: 'Left Gear & Wheel Well', items: ['Tires condition', 'Brakes condition', 'Wheel well general condition', 'Evidence of Leaks'], required_photos: ['General views', 'Close-up of brakes', 'Wheel well'] },
+      { id: 'engine1', title: 'Fitted Engine No. 1 - LH', sn_ref: 'engine1_sn', items: ['Inlet', 'Fan Blades', 'Abradable Lining', 'Acoustic Panels', 'Exhaust Plug', 'Low LPT outlet guide vane', 'Evidence of Leaks', 'Pylon'], required_photos: ['Data Plate', 'General View', 'Inlet View', 'Fan blades', 'Exhaust view', 'Pylon'] }
+    ];
+
+    const physicalInterior = [
+      { id: 'cockpit', title: 'Cockpit', items: ['General Appearance', 'Displays', 'Windows (scratched/nicks/delamination)', 'Seats – Conditions & Operation', 'Floor Covering', "Owner's Identification Plate"], required_photos: ['General View', 'Captain Seat & Instrumentation', 'First Officer Seat & Instrumentation'] },
+      { id: 'cabin', title: 'Cabin', items: ['General Appearance', 'Windows', 'Class Divider', 'Seats – Condition and Operation', 'Attendant Seats', 'Attendant Emergency Stowage', 'Floor Covering', 'Ceiling Panels', 'Stowage Bins', 'PSUs', 'Sidewall Linings', 'Dado Panels', 'Windscreen', 'Emergency Exits', 'In-Flight Entertainment System', 'Video Monitors'], required_photos: ['Each class looking aft', 'Each class looking forward', 'Seat details', 'IFE system', 'Emergency exits'] },
+      { id: 'galley_g1', title: 'Forward Galley [G1]', items: ['General Appearance', 'Floor Covering', 'Work tables', 'Latches', 'Containers & Carts', 'Ovens', 'Coffee maker', 'Hot Pots', 'Water Boilers', 'Chillers', 'Entry Service Doors'], required_photos: ['General view', 'Equipment close-ups', 'Floor condition'] },
+      { id: 'galley_g2', title: 'Second Forward Galley [G2]', items: ['General Appearance', 'Floor Covering', 'Work tables', 'Latches', 'Containers & Carts', 'Ovens', 'Coffee maker', 'Hot Pots', 'Water Boilers', 'Chillers', 'Entry Service Doors'], required_photos: ['General view', 'Equipment close-ups', 'Floor condition'] },
+      { id: 'galley_g4b', title: 'Aft Galley [G4B]', items: ['General Appearance', 'Floor Covering', 'Work tables', 'Latches', 'Containers & Carts', 'Ovens', 'Coffee maker', 'Hot Pots', 'Water Boilers', 'Chillers', 'Entry Service Doors'], required_photos: ['General view', 'Equipment close-ups', 'Floor condition'] },
+      { id: 'lav_la', title: 'Forward Lavatory [LA]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
+      { id: 'lav_ld', title: 'Aft Lavatory [LD]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
+      { id: 'lav_le', title: 'Second Aft Lavatory [LE]', items: ['General Appearance', 'Floor Covering', 'Toilet', 'Wash basin', 'Smoke Detectors', 'Door'], required_photos: ['General view', 'Floor condition', 'Fixtures'] },
+      { id: 'ee_compartment', title: 'Nose & E&E Compartment', items: ['General Appearance', 'Avionics racks', 'Circuit protection panels'], required_photos: ['General view', 'Avionics racks', 'Compartment condition'] }
+    ];
+
+    const recordsData = {
+      A: { title: 'A - Certificates', items: [
+        { code: 'A001', title: 'Airworthiness Review Certificate' },
+        { code: 'A002', title: 'Current Certificate of Airworthiness' },
+        { code: 'A004', title: 'Certificate of Registration' },
+        { code: 'A005', title: 'Radio License' },
+        { code: 'A006', title: 'Noise Certificate' },
+        { code: 'A009', title: 'Insurance Certificate' }
+      ] },
+      B: { title: 'B - Aircraft Status Reports', items: [
+        { code: 'B001', title: 'Hour-Cycle Summary' },
+        { code: 'B002', title: 'Airframe AD Status Report (All)' },
+        { code: 'B003', title: 'Appliance AD Status Report' },
+        { code: 'B004', title: 'Airframe SB Status Report' },
+        { code: 'B005', title: 'Appliance SB Status Report' },
+        { code: 'B006', title: 'Component Hard Time Status Report' },
+        { code: 'B007', title: 'OCCM Status Report' },
+        { code: 'B009', title: 'Modification & Engineering Order Status Report' },
+        { code: 'B011', title: 'LDND-Maintenance Program Task Summary Status' },
+        { code: 'B014', title: 'Maintenance Check History Report (Date of Check, Type of Check, TSN & CSN)' },
+        { code: 'B015', title: 'Dent & Damage Status' },
+        { code: 'B023', title: 'Installed Software Status' }
+      ] },
+      C: { title: 'C - Aircraft Configuration', items: [
+        { code: 'C001', title: 'Avionics Fitted Listing with ELT data' },
+        { code: 'C002', title: 'Emergency Equipment Inventory (Only if there has been a change since Delivery)' },
+        { code: 'C004', title: 'Current LOPA (Only if there has been a change since Delivery)' }
+      ] },
+      D: { title: 'D - Aircraft Maintenance Records', items: [
+        { code: 'D001', title: 'AD DFPs (Recently performed AD sample DFPs)' },
+        { code: 'D002', title: 'SB DFPs (Recently performed SB sample DFPs)' },
+        { code: 'D003', title: 'STC - DFPs (If any from current Operator)' },
+        { code: 'D004', title: 'EO-Mods-DFPs (If any from current Operator)' },
+        { code: 'D006', title: 'Dent & Buckle Chart & DFPs (If any from current Operator)' },
+        { code: 'D016', title: 'Aircraft Technical Logs (If available)' },
+        { code: 'D018', title: 'Last Weighing Report (Only if there has been a change since Delivery)' },
+        { code: 'D020', title: 'C Check (and Greater) Packages not already in ATS. Includes CRS (If any from current Operator)' }
+      ] },
+      E: { title: 'E - HT Component Tags (Sample DFPs) by ATA', items: [
+        { code: 'E', title: 'HT Component Tags (Sample DFPs) by ATA' }
+      ] },
+      F: { title: 'F - OCCM Component Tags (Sample DFPs) by ATA', items: [
+        { code: 'F', title: 'OCCM Component Tags (Sample DFPs) by ATA' }
+      ] },
+      H: { title: 'H - Aircraft Statements / Operator Essential Documents', items: [
+        { code: '2001', title: 'Air Operator Certificate (if applicable)' },
+        { code: '2002', title: 'Operator Specification' },
+        { code: '2003', title: 'Operator Approved Maintenance Program' }
+      ] },
+      ESN1: { title: 'Engine #1 - LH', sn_ref: 'engine1_sn', items: [
+        { code: 'I001', title: 'Current LLP Parts Status' },
+        { code: 'I002', title: 'Current Engine Hours/Cycles Summary' },
+        { code: 'I003', title: 'Current AD Status Report' },
+        { code: 'I004', title: 'Current SB Status Report' },
+        { code: 'I005', title: 'Inst-Rem History (If any from current Operator)' },
+        { code: 'I100', title: 'Shop Visit Report(s) - Work scope summary, Engine LLPs, Test Cell Run, Maint. Release' },
+        { code: 'I104', title: 'Engine Condition Monitoring (Take-Off & Cruise)' }
+      ] },
+      ESN2: { title: 'Engine #2 - RH', sn_ref: 'engine2_sn', items: [
+        { code: 'I001', title: 'Current LLP Parts Status' },
+        { code: 'I002', title: 'Current Engine Hours/Cycles Summary' },
+        { code: 'I003', title: 'Current AD Status Report' },
+        { code: 'I004', title: 'Current SB Status Report' },
+        { code: 'I005', title: 'Inst-Rem History (If any from current Operator)' },
+        { code: 'I100', title: 'Shop Visit Report(s) - Work scope summary, Engine LLPs, Test Cell Run, Maint. Release' },
+        { code: 'I104', title: 'Engine Condition Monitoring (Take-Off & Cruise)' }
+      ] },
+      APU: { title: 'APU', sn_ref: 'apu_sn', items: [
+        { code: 'J001', title: 'APU Hour Cycle Summary' },
+        { code: 'J002', title: 'Current APU LLP Status' },
+        { code: 'J005', title: 'APU Inst-Rem History' },
+        { code: 'J101', title: 'Shop Visit Report(s) not already available in ATS' },
+        { code: 'J301', title: 'APU Log Book / Master Record of Installation/Removals' }
+      ] },
+      K: { title: 'K - Landing Gear Status Reports', note: 'Note: Each LG has its own set of checklist', items: [
+        { code: 'K002_NOSE', title: 'Nose LLP Status Report', sn_ref: 'nose_lg_sn' },
+        { code: 'K002_LM', title: 'Left Main LLP Status Report', sn_ref: 'left_lg_sn' },
+        { code: 'K002_RM', title: 'Right Main LLP Status Report', sn_ref: 'right_lg_sn' },
+        { code: 'K003', title: 'Removal/Installation, etc. (If any from current Operator)' },
+        { code: 'K101_NOSE', title: 'Nose LG Repair and OH Data', sn_ref: 'nose_lg_sn' },
+        { code: 'K101_LM', title: 'LMG LG Repair and OH Data', sn_ref: 'left_lg_sn' },
+        { code: 'K101_RM', title: 'RMG LG Repair and OH Data', sn_ref: 'right_lg_sn' },
+        { code: 'K103', title: 'Miscellaneous' }
+      ] }
+    };
+
+    function switchView(viewId) {
+      if (!currentProject && viewId !== 'dashboard') {
+        return;
+      }
+      document.querySelectorAll('.view').forEach(view => view.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+      document.querySelector(`[data-view="${viewId}"]`).classList.add('active');
+      buildJumpMenu(viewId);
+      toggleJumpButton(viewId);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function toggleJumpMenu() {
+      document.getElementById('jump-menu').classList.toggle('active');
+    }
+
+    function toggleJumpButton(viewId) {
+      const button = document.getElementById('jump-button');
+      if (['general', 'inspection', 'records'].includes(viewId)) {
+        button.classList.add('active');
+      } else {
+        button.classList.remove('active');
+        document.getElementById('jump-menu').classList.remove('active');
+      }
+    }
+
+    function buildJumpMenu(viewId) {
+      const menu = document.getElementById('jump-menu');
+      const sections = [];
+      if (viewId === 'general') {
+        sections.push({ id: 'section-general-data', label: 'General Aircraft Data' });
+        sections.push({ id: 'section-executive', label: 'Section 1 - Executive Summary' });
+        sections.push({ id: 'section-technical', label: 'Section 2 - Technical Specification' });
+      }
+      if (viewId === 'inspection') {
+        sections.push({ id: 'section-exterior', label: 'Exterior Overview' });
+        physicalExterior.forEach(area => sections.push({ id: `area-${area.id}`, label: area.title }));
+        sections.push({ id: 'section-interior', label: 'Interior Overview' });
+        physicalInterior.forEach(area => sections.push({ id: `area-${area.id}`, label: area.title }));
+      }
+      if (viewId === 'records') {
+        Object.entries(recordsData).forEach(([key, section]) => {
+          sections.push({ id: `records-${key}`, label: section.title });
+        });
+      }
+      menu.innerHTML = sections.map(section => `<a href="#${section.id}" onclick="document.getElementById('jump-menu').classList.remove('active')">${section.label}</a>`).join('');
+    }
+
+    function markSaved(input) {
+      const field = input.closest('.field');
+      if (field) {
+        field.classList.add('saved');
+        setTimeout(() => field.classList.remove('saved'), 2000);
+      }
+      if (input.id) {
+        formData[input.id] = input.value;
+      }
+      if (input.dataset.populates) {
+        updateSerialNumberDisplays(input.id, input.value);
+      }
+      updateProgress();
+    }
+
+    function updateSerialNumberDisplays(fieldId, value) {
+      const field = generalDataFields.find(item => item.id === fieldId);
+      if (!field || !field.populates) return;
+      field.populates.forEach(targetId => {
+        const el = document.getElementById(targetId);
+        if (el) {
+          el.textContent = value || '—';
+        }
+      });
+    }
+
+    function handleCondition(radio, remarksId) {
+      const remarks = document.getElementById(remarksId);
+      if (!remarks) return;
+      if (radio.value === 'average' || radio.value === 'poor') {
+        remarks.classList.add('show');
+        const textarea = remarks.querySelector('textarea');
+        if (textarea) textarea.required = true;
+      } else {
+        remarks.classList.remove('show');
+        const textarea = remarks.querySelector('textarea');
+        if (textarea) textarea.required = false;
+      }
+      updateProgress();
+    }
+
+    function handleLeakStatus(select, remarksId) {
+      const remarks = document.getElementById(remarksId);
+      if (!remarks) return;
+      if (select.value === 'observed') {
+        remarks.classList.add('show');
+        const textarea = remarks.querySelector('textarea');
+        if (textarea) textarea.required = true;
+      } else {
+        remarks.classList.remove('show');
+        const textarea = remarks.querySelector('textarea');
+        if (textarea) textarea.required = false;
+      }
+      updateProgress();
+    }
+
+    function handlePhotos(event, gridId) {
+      const grid = document.getElementById(gridId);
+      Array.from(event.target.files).forEach(file => {
+        const url = URL.createObjectURL(file);
+        const card = document.createElement('div');
+        card.className = 'photo-card';
+        card.innerHTML = `
+          <img src="${url}" alt="${file.name}" />
+          <div class="photo-actions">
+            <button type="button" onclick="viewPhoto('${url}')">View</button>
+            <button type="button" onclick="deletePhoto(this)">Delete</button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function viewPhoto(url) {
+      window.open(url, '_blank');
+    }
+
+    function deletePhoto(btn) {
+      if (confirm('Delete this photo?')) {
+        const card = btn.closest('.photo-card');
+        if (card) {
+          card.remove();
+        }
+      }
+    }
+
+    function handleFileUpload(event, listId, recordCardId) {
+      const list = document.getElementById(listId);
+      Array.from(event.target.files).forEach(file => {
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+          <span>${file.name}</span>
+          <button type="button" class="icon-btn" onclick="deleteFile(this, '${recordCardId}')">Remove</button>
+        `;
+        list.appendChild(item);
+      });
+      const recordCard = document.getElementById(recordCardId);
+      const select = recordCard.querySelector('select');
+      select.value = 'yes';
+      updateRecordStatus(select);
+      updateFileCount(recordCardId);
+      updateProgress();
+    }
+
+    function deleteFile(btn, recordCardId) {
+      const item = btn.closest('.file-item');
+      if (item) item.remove();
+      const recordCard = document.getElementById(recordCardId);
+      const list = recordCard.querySelector('.file-list');
+      if (!list.children.length) {
+        const select = recordCard.querySelector('select');
+        select.value = 'no';
+        updateRecordStatus(select);
+      }
+      updateFileCount(recordCardId);
+      updateProgress();
+    }
+
+    function updateFileCount(recordCardId) {
+      const recordCard = document.getElementById(recordCardId);
+      const list = recordCard.querySelector('.file-list');
+      const countEl = recordCard.querySelector('.file-count');
+      if (countEl) {
+        countEl.textContent = `${list.children.length} file(s)`;
+      }
+    }
+
+    function updateRecordStatus(select) {
+      select.classList.remove('status-yes', 'status-no', 'status-na');
+      if (select.value === 'yes') select.classList.add('status-yes');
+      if (select.value === 'no') select.classList.add('status-no');
+      if (select.value === 'na') select.classList.add('status-na');
+      updateProgress();
+    }
+
+    function addContactRow(tableId) {
+      const tbody = document.querySelector(`#${tableId} tbody`);
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><input type="text" value="" oninput="markSaved(this)" /></td>
+        <td><input type="text" value="" oninput="markSaved(this)" /></td>
+        <td><input type="text" value="" oninput="markSaved(this)" /></td>
+        <td><input type="email" value="" oninput="markSaved(this)" /></td>
+        <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+      `;
+      tbody.appendChild(row);
+    }
+
+    function deleteRow(btn) {
+      const row = btn.closest('tr');
+      const tbody = row.parentElement;
+      if (tbody.children.length > 1) {
+        row.remove();
+      }
+    }
+
+    function renderGeneralData() {
+      const container = document.getElementById('general-data');
+      container.innerHTML = '';
+      generalDataFields.forEach(field => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'field';
+        wrapper.innerHTML = `<label for="${field.id}">${field.label}</label>`;
+        let input;
+        if (field.type === 'select') {
+          input = document.createElement('select');
+          input.id = field.id;
+          const placeholder = document.createElement('option');
+          placeholder.value = '';
+          placeholder.textContent = 'Select';
+          placeholder.disabled = true;
+          placeholder.selected = true;
+          input.appendChild(placeholder);
+          field.options.forEach(option => {
+            const opt = document.createElement('option');
+            opt.value = option;
+            opt.textContent = option;
+            input.appendChild(opt);
+          });
+        } else {
+          input = document.createElement('input');
+          input.type = field.type;
+          input.placeholder = field.placeholder || '';
+          input.id = field.id;
+        }
+        if (field.populates) {
+          input.dataset.populates = 'true';
+        }
+        input.addEventListener('input', () => markSaved(input));
+        input.addEventListener('change', () => markSaved(input));
+        wrapper.appendChild(input);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        wrapper.appendChild(indicator);
+        container.appendChild(wrapper);
+      });
+    }
+
+    function renderTechnicalSpec() {
+      const container = document.getElementById('technical-spec');
+      container.innerHTML = '';
+      technicalSpecFields.forEach(field => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'field';
+        wrapper.innerHTML = `<label for="${field.id}">${field.label}</label>`;
+        const input = document.createElement('input');
+        input.id = field.id;
+        input.placeholder = field.placeholder;
+        input.addEventListener('input', () => markSaved(input));
+        wrapper.appendChild(input);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        wrapper.appendChild(indicator);
+        container.appendChild(wrapper);
+      });
+
+      const configContainer = document.getElementById('config-spec');
+      configContainer.innerHTML = '';
+      configFields.forEach(field => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'field';
+        wrapper.innerHTML = `<label for="${field.id}">${field.label}</label>`;
+        const input = document.createElement('input');
+        input.id = field.id;
+        input.placeholder = field.placeholder;
+        input.addEventListener('input', () => markSaved(input));
+        wrapper.appendChild(input);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        wrapper.appendChild(indicator);
+        configContainer.appendChild(wrapper);
+      });
+    }
+
+    function renderExecutiveSummary() {
+      const container = document.getElementById('executive-summary');
+      container.innerHTML = '';
+      const addQuestions = (section, questions) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.innerHTML = `<h3>${section}</h3>`;
+        questions.forEach(question => {
+          const field = document.createElement('div');
+          field.className = 'field';
+          field.innerHTML = `<label for="${question.id}">${question.label}</label>`;
+          const textarea = document.createElement('textarea');
+          textarea.id = question.id;
+          textarea.rows = question.rows || 3;
+          textarea.addEventListener('input', () => markSaved(textarea));
+          field.appendChild(textarea);
+          const indicator = document.createElement('span');
+          indicator.className = 'save-indicator';
+          indicator.textContent = '✓';
+          field.appendChild(indicator);
+          sectionDiv.appendChild(field);
+        });
+        container.appendChild(sectionDiv);
+      };
+
+      addQuestions(executiveSummary.general_visit.title, executiveSummary.general_visit.questions);
+
+      const contactsSection = document.createElement('div');
+      contactsSection.innerHTML = `<h3>${executiveSummary.operator_contacts.title}</h3>`;
+      const contactsTable = document.createElement('table');
+      contactsTable.id = 'contacts-table';
+      contactsTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>Contact</th>
+            <th>Title</th>
+            <th>Phone Number</th>
+            <th>Email</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="Maria Alvarez" oninput="markSaved(this)" /></td>
+            <td><input type="text" value="Maintenance Director" oninput="markSaved(this)" /></td>
+            <td><input type="text" value="+1 202 555 0147" oninput="markSaved(this)" /></td>
+            <td><input type="email" value="maria.alvarez@ara.jet" oninput="markSaved(this)" /></td>
+            <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+          </tr>
+        </tbody>
+      `;
+      const addRowButton = document.createElement('button');
+      addRowButton.className = 'icon-btn';
+      addRowButton.textContent = '+ Add contact';
+      addRowButton.type = 'button';
+      addRowButton.style.marginTop = '10px';
+      addRowButton.addEventListener('click', () => addContactRow('contacts-table'));
+      contactsSection.appendChild(contactsTable);
+      contactsSection.appendChild(addRowButton);
+      container.appendChild(contactsSection);
+
+      const findingsSection = document.createElement('div');
+      findingsSection.innerHTML = `<h3>${executiveSummary.inspection_findings.title}</h3>`;
+      Object.values(executiveSummary.inspection_findings.subsections).forEach(sub => {
+        const subDiv = document.createElement('div');
+        subDiv.innerHTML = `<h4>${sub.title}</h4>`;
+        if (sub.subtitle) {
+          const subtitle = document.createElement('p');
+          subtitle.textContent = sub.subtitle;
+          subDiv.appendChild(subtitle);
+        }
+        (sub.questions || sub.items).forEach(item => {
+          const field = document.createElement('div');
+          field.className = 'field';
+          let labelText = item.label;
+          if (item.sn_ref) {
+            labelText += ` — S/N: <span id="sn_value_${item.sn_ref === 'engine1_sn' ? 'engine1' : item.sn_ref === 'engine2_sn' ? 'engine2' : 'apu'}">${formData[item.sn_ref] || '—'}</span>`;
+          }
+          field.innerHTML = `<label>${labelText}</label>`;
+          const textarea = document.createElement('textarea');
+          textarea.id = item.id;
+          textarea.placeholder = item.placeholder || '';
+          textarea.addEventListener('input', () => markSaved(textarea));
+          field.appendChild(textarea);
+          const indicator = document.createElement('span');
+          indicator.className = 'save-indicator';
+          indicator.textContent = '✓';
+          field.appendChild(indicator);
+          subDiv.appendChild(field);
+        });
+        findingsSection.appendChild(subDiv);
+      });
+      container.appendChild(findingsSection);
+
+      const modsSection = document.createElement('div');
+      modsSection.innerHTML = `<h3>${executiveSummary.mods_stcs.title}</h3><p>${executiveSummary.mods_stcs.note}</p>`;
+      const modsTable = document.createElement('table');
+      modsTable.id = 'mods-table';
+      modsTable.innerHTML = `
+        <thead>
+          <tr>
+            <th>ATA</th>
+            <th>Title</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="27" oninput="markSaved(this)" /></td>
+            <td><input type="text" value="Winglet Retrofit" oninput="markSaved(this)" /></td>
+            <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+          </tr>
+        </tbody>
+      `;
+      const addModButton = document.createElement('button');
+      addModButton.className = 'icon-btn';
+      addModButton.textContent = '+ Add mod / STC';
+      addModButton.type = 'button';
+      addModButton.style.marginTop = '10px';
+      addModButton.addEventListener('click', () => {
+        const tbody = modsTable.querySelector('tbody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><input type="text" oninput="markSaved(this)" /></td>
+          <td><input type="text" oninput="markSaved(this)" /></td>
+          <td><button class="icon-btn" type="button" onclick="deleteRow(this)">Remove</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+      modsSection.appendChild(modsTable);
+      modsSection.appendChild(addModButton);
+      container.appendChild(modsSection);
+
+      const differencesSection = document.createElement('div');
+      differencesSection.innerHTML = `<h3>${executiveSummary.differences.title}</h3>`;
+      executiveSummary.differences.items.forEach(item => {
+        const field = document.createElement('div');
+        field.className = 'field';
+        field.innerHTML = `<label for="${item.id}">${item.label}</label>`;
+        const textarea = document.createElement('textarea');
+        textarea.id = item.id;
+        textarea.addEventListener('input', () => markSaved(textarea));
+        field.appendChild(textarea);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        field.appendChild(indicator);
+        differencesSection.appendChild(field);
+      });
+      container.appendChild(differencesSection);
+
+      const followupSection = document.createElement('div');
+      followupSection.innerHTML = `<h3>${executiveSummary.followup.title}</h3>`;
+      executiveSummary.followup.items.forEach(item => {
+        const field = document.createElement('div');
+        field.className = 'field';
+        field.innerHTML = `<label for="${item.id}">${item.label}</label>`;
+        const textarea = document.createElement('textarea');
+        textarea.id = item.id;
+        textarea.addEventListener('input', () => markSaved(textarea));
+        field.appendChild(textarea);
+        const indicator = document.createElement('span');
+        indicator.className = 'save-indicator';
+        indicator.textContent = '✓';
+        field.appendChild(indicator);
+        followupSection.appendChild(field);
+      });
+      container.appendChild(followupSection);
+    }
+
+    function renderAreas(areas, containerId) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      areas.forEach(area => {
+        const card = document.createElement('div');
+        card.className = 'area-card';
+        card.id = `area-${area.id}`;
+        const snTag = area.sn_ref ? `<span class="sn-tag">S/N: <span id="sn_value_${area.sn_ref === 'engine1_sn' ? 'engine1' : 'engine2'}">${formData[area.sn_ref] || '—'}</span></span>` : '';
+        card.innerHTML = `
+          <div class="area-header">
+            <h4>${area.title}</h4>
+            <div class="area-progress" id="progress-${area.id}">0 / ${area.items.length} complete</div>
+            ${snTag}
+          </div>
+        `;
+        area.items.forEach((item, index) => {
+          const row = document.createElement('div');
+          row.className = 'condition-row';
+          const remarksId = `${area.id}_remarks_${index}`;
+          const isLeak = item.toLowerCase().includes('evidence of leaks');
+          row.innerHTML = `
+            <div>
+              <span class="condition-label">${item}</span>
+              <div id="${remarksId}" class="remarks">
+                <label>Remarks</label>
+                <textarea placeholder="Required: Explain condition in detail..." oninput="markSaved(this)"></textarea>
+              </div>
+            </div>
+            <div class="radio-group">
+              ${isLeak ? `
+                <select id="${area.id}_leak_${index}" onchange="handleLeakStatus(this, '${remarksId}')">
+                  <option value="" selected disabled>Select</option>
+                  <option value="none">No evidence</option>
+                  <option value="observed">Evidence observed</option>
+                  <option value="not_checked">Not inspected</option>
+                </select>
+              ` : `
+                <label><input type="radio" name="${area.id}_cond_${index}" value="good" onchange="handleCondition(this, '${remarksId}')"> Good</label>
+                <label><input type="radio" name="${area.id}_cond_${index}" value="average" onchange="handleCondition(this, '${remarksId}')"> Average</label>
+                <label><input type="radio" name="${area.id}_cond_${index}" value="poor" onchange="handleCondition(this, '${remarksId}')"> Poor</label>
+              `}
+            </div>
+          `;
+          card.appendChild(row);
+        });
+        const areaComment = document.createElement('div');
+        areaComment.className = 'field';
+        areaComment.innerHTML = `
+          <label for="${area.id}_comment">Additional auditor comments</label>
+          <textarea id="${area.id}_comment" placeholder="Add any additional notes for this area..." oninput="markSaved(this)"></textarea>
+        `;
+        card.appendChild(areaComment);
+
+        const photoInputId = `${area.id}_photos`;
+        const gridId = `${area.id}_grid`;
+        const photoSection = document.createElement('div');
+        photoSection.className = 'field';
+        photoSection.innerHTML = `
+          <label for="${photoInputId}">Photos</label>
+          <div class="inline-note"><strong>Required Photos:</strong> ${area.required_photos.join(', ')}</div>
+          <label class="icon-btn" for="${photoInputId}">+ Add photos</label>
+          <input id="${photoInputId}" type="file" accept="image/*" multiple style="display:none;" onchange="handlePhotos(event, '${gridId}')" />
+          <div id="${gridId}" class="photo-grid"></div>
+        `;
+        card.appendChild(photoSection);
+        container.appendChild(card);
+      });
+    }
+
+    function renderRecords() {
+      const container = document.getElementById('records-container');
+      container.innerHTML = '';
+      Object.entries(recordsData).forEach(([key, section]) => {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.className = 'record-section';
+        sectionDiv.id = `records-${key}`;
+        const title = document.createElement('h3');
+        title.textContent = section.title;
+        sectionDiv.appendChild(title);
+        if (section.note) {
+          const note = document.createElement('p');
+          note.textContent = section.note;
+          sectionDiv.appendChild(note);
+        }
+        if (section.sn_ref) {
+          const sn = document.createElement('p');
+          const snValueId = `sn_records_${key}`;
+          sn.innerHTML = `Assigned Serial Number: <span class="sn-tag" id="${snValueId}">${formData[section.sn_ref] || '—'}</span>`;
+          sectionDiv.appendChild(sn);
+        }
+        const table = document.createElement('table');
+        table.className = 'record-table';
+        table.innerHTML = `
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Title</th>
+              <th>Serial</th>
+              <th>Status</th>
+              <th>ATS</th>
+              <th>Files</th>
+              <th>Upload</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        `;
+        const tbody = table.querySelector('tbody');
+        section.items.forEach((item, index) => {
+          const recordCardId = `record_${key}_${index}`;
+          const row = document.createElement('tr');
+          const snSpan = item.sn_ref ? `<span id="sn_rec_${item.code}">${formData[item.sn_ref] || '—'}</span>` : '—';
+          row.id = recordCardId;
+          row.innerHTML = `
+            <td>${item.code}</td>
+            <td>${item.title}</td>
+            <td>${snSpan}</td>
+            <td>
+              <select class="record-status-select status-no" onchange="updateRecordStatus(this)">
+                <option value="yes">Yes</option>
+                <option value="no" selected>No</option>
+                <option value="na">N/A</option>
+              </select>
+            </td>
+            <td><label><input type="checkbox" /> ATS</label></td>
+            <td>
+              <span class="file-count">0 file(s)</span>
+              <div class="file-list" id="filelist_${recordCardId}"></div>
+            </td>
+            <td>
+              <label class="icon-btn" for="file_${recordCardId}">+ Add</label>
+              <input id="file_${recordCardId}" type="file" multiple style="display:none;" onchange="handleFileUpload(event, 'filelist_${recordCardId}', '${recordCardId}')" />
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+        sectionDiv.appendChild(table);
+        container.appendChild(sectionDiv);
+      });
+    }
+
+    function fillProjectData(projectId) {
+      const project = projects[projectId];
+      currentProject = projectId;
+      if (!project) return;
+
+      generalDataFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input) return;
+        const value = project.general[field.id] || '';
+        if (input.tagName === 'SELECT') {
+          input.value = value || '';
+        } else {
+          input.value = value;
+        }
+        formData[field.id] = value;
+        if (field.populates) updateSerialNumberDisplays(field.id, value);
+      });
+
+      technicalSpecFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input) return;
+        const value = project.technical[field.id] || '';
+        input.value = value;
+        formData[field.id] = value;
+      });
+
+      configFields.forEach(field => {
+        const input = document.getElementById(field.id);
+        if (!input) return;
+        const value = project.technical[field.id] || '';
+        input.value = value;
+        formData[field.id] = value;
+      });
+
+      document.querySelectorAll('#executive-summary textarea').forEach(textarea => {
+        textarea.value = '';
+        formData[textarea.id] = '';
+      });
+
+      Object.keys(project.exec || {}).forEach(key => {
+        const textarea = document.getElementById(key);
+        if (textarea) {
+          textarea.value = project.exec[key] || '';
+          formData[key] = project.exec[key] || '';
+        }
+      });
+
+      document.querySelectorAll('input[type="radio"]').forEach(radio => (radio.checked = false));
+      document.querySelectorAll('.remarks').forEach(remarks => remarks.classList.remove('show'));
+
+      updateProgress();
+    }
+
+    function enableReportNavigation() {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        if (btn.dataset.view !== 'dashboard') {
+          btn.classList.remove('disabled');
+        }
+      });
+    }
+
+    function selectProject(projectId) {
+      fillProjectData(projectId);
+      enableReportNavigation();
+      switchView('general');
+    }
+
+    function updateProgress() {
+      const generalInputs = document.querySelectorAll('#general-data input, #general-data select');
+      const generalCompleted = Array.from(generalInputs).filter(input => input.value && input.value.trim() !== '').length;
+      updateProgressPill('progress-general', generalCompleted, generalInputs.length);
+
+      const execInputs = document.querySelectorAll('#executive-summary textarea');
+      const execCompleted = Array.from(execInputs).filter(input => input.value && input.value.trim() !== '').length;
+      updateProgressPill('progress-executive', execCompleted, execInputs.length);
+
+      const technicalInputs = document.querySelectorAll('#technical-spec input, #config-spec input');
+      const technicalCompleted = Array.from(technicalInputs).filter(input => input.value && input.value.trim() !== '').length;
+      updateProgressPill('progress-technical', technicalCompleted, technicalInputs.length);
+
+      const exteriorAreas = physicalExterior.map(area => updateAreaProgress(area));
+      const interiorAreas = physicalInterior.map(area => updateAreaProgress(area));
+      const exteriorTotal = physicalExterior.reduce((sum, area) => sum + area.items.length, 0);
+      const interiorTotal = physicalInterior.reduce((sum, area) => sum + area.items.length, 0);
+      const exteriorCompleted = exteriorAreas.reduce((sum, area) => sum + area.completed, 0);
+      const interiorCompleted = interiorAreas.reduce((sum, area) => sum + area.completed, 0);
+      updateProgressPill('progress-exterior', exteriorCompleted, exteriorTotal);
+      updateProgressPill('progress-interior', interiorCompleted, interiorTotal);
+
+      const recordSelects = document.querySelectorAll('.record-status-select');
+      const recordCompleted = Array.from(recordSelects).filter(select => select.value !== 'no').length;
+      updateProgressPill('progress-records', recordCompleted, recordSelects.length);
+
+      const totalCompleted = generalCompleted + execCompleted + technicalCompleted + exteriorCompleted + interiorCompleted + recordCompleted;
+      const totalItems = generalInputs.length + execInputs.length + technicalInputs.length + exteriorTotal + interiorTotal + recordSelects.length;
+      const submitBtn = document.getElementById('submit-btn');
+      const submitStatus = document.getElementById('submit-status');
+
+      if (totalItems > 0 && totalCompleted === totalItems) {
+        submitBtn.disabled = false;
+        submitStatus.textContent = 'All sections complete. Ready to submit.';
+      } else {
+        submitBtn.disabled = true;
+        submitStatus.textContent = 'Complete all sections to submit.';
+      }
+    }
+
+    function updateAreaProgress(area) {
+      let completed = 0;
+      area.items.forEach((item, index) => {
+        const isLeak = item.toLowerCase().includes('evidence of leaks');
+        if (isLeak) {
+          const select = document.getElementById(`${area.id}_leak_${index}`);
+          if (select && select.value) completed += 1;
+        } else {
+          const checked = document.querySelector(`input[name="${area.id}_cond_${index}"]:checked`);
+          if (checked) completed += 1;
+        }
+      });
+      const progressEl = document.getElementById(`progress-${area.id}`);
+      if (progressEl) {
+        progressEl.textContent = `${completed} / ${area.items.length} complete`;
+      }
+      return { completed };
+    }
+
+    function updateProgressPill(id, completed, total) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = `${completed} / ${total} completed`;
+      if (completed === total && total > 0) {
+        el.classList.add('complete');
+      } else {
+        el.classList.remove('complete');
+      }
+    }
+
+    renderGeneralData();
+    renderExecutiveSummary();
+    renderTechnicalSpec();
+    renderAreas(physicalExterior, 'exterior-areas');
+    renderAreas(physicalInterior, 'interior-areas');
+    renderRecords();
+    document.querySelectorAll('.record-status-select').forEach(select => updateRecordStatus(select));
+    buildJumpMenu('dashboard');
+  </script>
 </body>
 </html>
